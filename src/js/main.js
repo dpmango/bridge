@@ -120,7 +120,6 @@ $(document).ready(function(){
     // HOMEPAGE SLIDER
     var $slider = $('[js-home-slider]');
     var $slides = $slider.find('.home__slide');
-    var containerWidth = $slider.parent().width()
     var numberOfSlides = $slides.length
     var activeSlide = 0 // first is the default
     var sensitivity = 25
@@ -128,8 +127,16 @@ $(document).ready(function(){
     var timer
 
     // set widths
-    $slider.css({ 'width': containerWidth * numberOfSlides })
-    $slides.css({ 'width': containerWidth })
+    function setSizes(){
+      var containerWidth = $slider.parent().width()
+
+      $slider.css({ 'width': containerWidth * numberOfSlides })
+      $slides.css({ 'width': containerWidth })
+    }
+
+    setSizes();
+    _window.on('resize', debounce(setSizes, 200))
+
 
     // hammer.js instance
     var sliderManager = new Hammer.Manager($slider.get(0));
@@ -142,7 +149,6 @@ $(document).ready(function(){
       $slider.css({
         'transform': 'translate3d(' + transformPercentage + '%,0,0)'
       });
-
 
       if(e.isFinal) {
         if (e.velocityX > 1) {
@@ -179,8 +185,10 @@ $(document).ready(function(){
 
       clearTimeout( timer );
       timer = setTimeout( function() {
-        $slider.addClass('is-animating');
+        $slider.removeClass('is-animating');
       }, transitionDuration );
+
+      triggerBody();
 
     };
 

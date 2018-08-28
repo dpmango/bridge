@@ -1,4 +1,5 @@
 .home
+  font-size: 0
   &__slider
     position: relative
     z-index: 1
@@ -18,7 +19,6 @@
     &.is-animating
       transition-duration: .4s
       transition-timing-function: cubic-bezier( 0.5, 0, 0.5, 1)
-      
 
   &__slide
     flex-shrink: 0
@@ -27,9 +27,12 @@
     min-height: 100vh
     display: flex
     flex-direction: column
+    backface-visibility: hidden
+    transform: translate3d(0,0,0)
 
   .slide-home
     position: relative
+    z-index: 1
     overflow: hidden
     color: white
     &__background
@@ -51,9 +54,13 @@
         z-index: 2
     &__contents
       position: relative
-      z-index: 2
-      margin: auto
+      z-index: 3
+      margin: auto 0
       padding: 120px 0 60px
+      max-width: 1920px
+      padding-left: 60px
+      padding-right: 60px
+      margin-left: 10%
 
     &__name
       font-size: 35px
