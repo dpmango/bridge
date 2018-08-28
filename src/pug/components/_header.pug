@@ -3,16 +3,14 @@ header.header
   .container
     .header__wrapper
       a(href="#").header__logo
-        +icon('ico-email')
+        +icon('ico-logo')
       ul.header__menu
-        - var list = ["Homepage", "Shop", "Blog", "Lorem"]
-          each item in list
-            li
-              a.header__menu-link(href="#")=item
-      
-      .header__cta
-        .header__cart
-          +icon('ico-email')
+        li 
+          a(href="#") Проекты
+        li
+          a(href="#") Контакты
+        li
+          a(href="#") Мы
       
       .header__hamburger
         .hamburger.hamburger--squeeze(js-hamburger)

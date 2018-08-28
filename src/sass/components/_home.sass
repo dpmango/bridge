@@ -1,0 +1,36 @@
+.home
+  &__slider
+    position: relative
+    display: flex
+  &__slide
+    flex: 0 0 100%
+    max-width: 100%
+    min-height: 100vh
+    display: flex
+    flex-direction: column
+
+  .slide-home
+    position: relative
+    overflow: hidden
+    color: white
+    &__background
+      position: absolute 0
+      font-size: 0
+      z-index: 1
+      img
+        max-width: 100%
+    &__contents
+      position: relative
+      z-index: 2
+      margin: auto
+      padding: 120px 0 60px
+
+    &__name
+      font-size: 35px
+      font-weight: 700
+
+    &__title
+      font-size: 68px
+      text-transform: uppercase
+      // black
+      font-weight: 900

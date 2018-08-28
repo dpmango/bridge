@@ -1,0 +1,17 @@
+.preloader
+  position: fixed 0
+  z-index: 999
+  background: black
+  display: flex
+  flex-direction: column
+  pointer-events: none
+  transition: .25s $ease
+  &.is-loaded
+    opacity: 0
+
+  &__wrapper
+    flex: 1 1 auto
+    display: flex
+    align-items: center
+    justify-content: center
+    text-align: center

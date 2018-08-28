@@ -1,7 +1,9 @@
-ProjectTitle: Project-name
+ProjectTitle: Bridge
 
 PageList:
 - file: homepage.html
-  ready: 100
-- file: page.html
+  ready: 20
+- file: project.html
+  ready: 0
+- file: about.html
   ready: 0

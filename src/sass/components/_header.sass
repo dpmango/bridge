@@ -4,45 +4,60 @@
   top: 0
   right: 0
   left: 0
-  background: #f5f5f5
+  z-index: 9
+  color: white
+  &.is-dark
+    color: $fontColor
+
   &__wrapper
     display: flex
     align-items: center
-    height: 70px
+    padding: 55px 0 30px
 
   &__logo
     flex: 0 0 auto
-    font-size: 35px
+    font-size: 29px
     padding-right: 30px
 
   &__menu
     flex: 0 1 auto
     display: flex
     align-items: center
-    font-size: 18px
-    margin: 0 auto
+    font-size: 20px
+    margin: 0 0px 0 auto
     padding: 0
     li
       display: inline-block
-      margin-right: 30px
+      margin-right: 45px
+      &:last-child
+        margin-right: 0
     a
+      position: relative
+      display: inline-block
+      padding: 10px
       transition: color .25s $ease
+      &::after
+        display: inline-block
+        content: ' '
+        position: absolute
+        bottom: 5px
+        left: 10px
+        right: 100%
+        transition: .25s $ease
+        height: 2px
+        background: currentColor
       &:hover
-        color: tomato
-
-  &__cta
-    margin-left: auto
-    padding-left: 30px
+        &::after
+          right: 10px
 
   &__hamburger
-    // display: none
+    display: none
     padding-left: 20px
 
 
 +r($desktop)
   .header
-    &__cta
-      display: none
+
 
 +r($tablet)
   .header

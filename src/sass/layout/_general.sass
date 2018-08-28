@@ -16,7 +16,7 @@ ul
 body, html
   background: white
   color: $fontColor
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+  font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, Arial, sans-serif
   font-size: 16px
   min-width: 320px
   max-width: 100%
@@ -34,17 +34,20 @@ body, html
     flex: 1 0 auto
     display: flex
     flex-direction: column
-    // header offset ex
-    padding-top: 100px
 
 .container
-  max-width: 1200px
+  max-width: 1920px
   width: 100%
   margin-left: auto
   margin-right: auto
-  padding-left: 40px
-  padding-right: 40px
+  padding-left: 65px
+  padding-right: 65px
 
++r($desktop)
+  .container
+    padding-left: 40px
+    padding-right: 40px
+    
 +r($mobile)
   .container
     padding-left: 20px
