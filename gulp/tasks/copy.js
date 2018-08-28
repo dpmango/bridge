@@ -13,6 +13,12 @@ gulp.task('copy:vendor', function() {
     .pipe(gulp.dest(config.dest.vendor));
 });
 
+gulp.task('copy:video', function() {
+  return gulp
+    .src(config.src.video + '/*.*')
+    .pipe(gulp.dest(config.dest.video));
+});
+
 gulp.task('copy:rootfiles', function() {
   return gulp
     .src(config.src.root + '/*.*')

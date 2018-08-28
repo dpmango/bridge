@@ -34,7 +34,7 @@ $(document).ready(function(){
 
     // Viewport units buggyfill
     window.viewportUnitsBuggyfill.init({
-      force: false,
+      force: true,
       refreshDebounceWait: 150,
       appendToBody: true
     });
@@ -115,9 +115,74 @@ $(document).ready(function(){
   //////////
 
   function initSliders(){
+    // https://codepen.io/dangodev/pen/bpjrRg
 
     // HOMEPAGE SLIDER
+    var $slider = $('[js-home-slider]');
+    var $slides = $slider.find('.home__slide');
+    var containerWidth = $slider.parent().width()
+    var numberOfSlides = $slides.length
+    var activeSlide = 0 // first is the default
+    var sensitivity = 25
+    var transitionDuration = 400 // ms
+    var timer
 
+    // set widths
+    $slider.css({ 'width': containerWidth * numberOfSlides })
+    $slides.css({ 'width': containerWidth })
+
+    // hammer.js instance
+    var sliderManager = new Hammer.Manager($slider.get(0));
+    sliderManager.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));
+    sliderManager.on('pan', function(e) {
+      var movePower = (e.deltaX * 1.2)
+      var percentage = 100 / numberOfSlides * movePower / window.innerWidth;
+      var transformPercentage = percentage - 100 / numberOfSlides * activeSlide;
+
+      $slider.css({
+        'transform': 'translate3d(' + transformPercentage + '%,0,0)'
+      });
+
+
+      if(e.isFinal) {
+        if (e.velocityX > 1) {
+          goToSlide(activeSlide - 1);
+        } else if (e.velocityX < -1) {
+          goToSlide(activeSlide + 1)
+        } else {
+          if (percentage <= -(sensitivity / numberOfSlides)) {
+            goToSlide(activeSlide + 1);
+          } else if (percentage >= (sensitivity / numberOfSlides)) {
+            goToSlide(activeSlide - 1);
+          } else {
+            goToSlide(activeSlide );
+          }
+        }
+      }
+    });
+
+    function goToSlide(number) {
+      if (number < 0) {
+        activeSlide = 0;
+      } else if (number > numberOfSlides - 1) {
+        activeSlide = numberOfSlides - 1
+      } else {
+        activeSlide = number;
+      }
+
+      $slider.addClass('is-animating');
+
+      var percentage = -(100 / numberOfSlides) * activeSlide;
+      $slider.css({
+        'transform': 'translate3d(' + percentage + '%,0,0)'
+      });
+
+      clearTimeout( timer );
+      timer = setTimeout( function() {
+        $slider.addClass('is-animating');
+      }, transitionDuration );
+
+    };
 
   }
 
