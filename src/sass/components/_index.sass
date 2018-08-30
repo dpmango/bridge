@@ -22,3 +22,21 @@
       border: 1px solid $fontColor
       border-radius: 50%
       transition: .25s $ease
+
+// hover effect for the links
+.link-border
+  display: inline-block
+  position: relative
+  &::after
+    display: inline-block
+    content: ' '
+    position: absolute
+    bottom: 0px
+    left: 0
+    right: 100%
+    height: 2px
+    background: currentColor
+    transition: .8s $easing
+  &:hover
+    &::after
+      right: 0

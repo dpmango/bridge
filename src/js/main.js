@@ -111,20 +111,12 @@ $(document).ready(function(){
     });
   }
 
-  // function wrapLine(that) {
-  //   var a = $(that).html().replace(/\n/g, " \n<br/> ").split(" ");
-  //   $.each(a, function(i, val) {
-  //     if(!val.match(/\n/) && val!="") a[i] = '<span>' + val + '</span>';
-  //   });
-  //   $(that).html(a.join(" "));
-  // };
-
-
+  ///////////
+  // WRAP LONG TEXT TO EACH LINE SPAN
+  //////////
   function initWrapText(){
-    $('.slide-home__title').each(function(i,title){
-      // wrapLine(title);
+    $('.hero__title').each(function(i,title){
       $(title).lines()
-
     })
   }
 
@@ -222,7 +214,6 @@ $(document).ready(function(){
       var self = $(val)
       var objHtml = $(val).html();
       var target = $('[data-teleport-target=' + $(val).data('teleport-to') + ']');
-      console.log($(val))
       var conditionMedia = $(val).data('teleport-condition').substring(1);
       var conditionPosition = $(val).data('teleport-condition').substring(0, 1);
 
@@ -259,6 +250,7 @@ $(document).ready(function(){
   // BARBA PJAX
   //////////
   var easingSwing = [.02, .01, .47, 1]; // default jQuery easing for anime.js
+  var moveEasing = [0.77, 0, 0.175, 1];
 
   Barba.Pjax.Dom.containerClass = "page";
 
@@ -316,24 +308,131 @@ $(document).ready(function(){
     }
   });
 
-  // set barba transition
+  // project transition
+  var ProjectTransition = Barba.BaseTransition.extend({
+    start: function() {
+      Promise
+        .all([this.newContainerLoading, this.startAnimation()])
+        .then(this.landAnimation.bind(this));
+    },
+
+    startAnimation: function() {
+      console.log('startAnimation triggered', this)
+      var originalEl = $(this.oldContainer).find(lastClickEl);
+      originalEl.closest('.home').addClass('is-transitioning');
+
+      this._newContainerPromise
+        .then(function(res){
+          var $newContainer = $(res);
+          $newContainer.css({
+            'position': 'absolute',
+            'top': 0,
+            'left': 0,
+            'right': 0,
+            'visibility': 'visible',
+            'opacity': 0
+          });
+        })
+
+
+
+      var deferred = Barba.Utils.deferred();
+      setTimeout(function(){
+        deferred.resolve();
+      }, 500) // timeout for moveout animation
+      return deferred.promise
+    },
+
+    landAnimation: function() {
+      console.log('landAnimation triggered')
+      var _this = this;
+
+      var $newContainer = $(this.newContainer);
+      $newContainer.css({
+        'position': 'absolute',
+        'top': 0,
+        'left': 0,
+        'right': 0,
+        'visibility': 'visible',
+        'opacity': 0
+      });
+
+      // var originalEl = $(this.oldContainer).find(lastClickEl);
+
+      // TODO - do some kind of image preloading ?
+
+      // scroll body
+      anime({
+        targets: "html, body",
+        scrollTop: 200,
+        easing: moveEasing, // swing
+        duration: 800
+      });
+
+      // fadeOut oldContainer
+      anime({
+        targets: this.oldContainer,
+        opacity : 0,
+        easing: easingSwing, // swing
+        duration: 300
+      })
+
+      // show new Container
+      // (kind of blending should happens)
+      // TODO - might be workable with .show / .hide toggle also
+      anime({
+        targets: $newContainer.get(0),
+        opacity: 1,
+        easing: easingSwing, // swing
+        duration: 300,
+        complete: function(anim) {
+          // triggerBody()
+          _this.done();
+        }
+      });
+
+    }
+  });
+
+  // transition logic
+  var lastClickEl;
   Barba.Pjax.getTransition = function() {
-    return FadeTransition;
+    var transitionObj = FadeTransition; // default transition
+
+    // route specific transitions
+    if ( $(lastClickEl).attr('href') === 'project.html' ){
+      transitionObj = ProjectTransition;
+    }
+    return transitionObj;
   };
 
   Barba.Prefetch.init();
   Barba.Pjax.start();
 
-  Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container, newPageRawHTML) {
+  // event handlers
+  Barba.Dispatcher.on('initStateChange', function(currentStatus){
+    var container = Barba.Pjax.Dom.getContainer()
+    var haveContainer = $(container).find('.page__content').length > 0
 
+    if ( !haveContainer){
+      // handle error - redirect ot page regular way
+      window.location.href = currentStatus.url
+    }
+
+  });
+
+  Barba.Dispatcher.on('linkClicked', function(el) {
+    lastClickEl = el; // save last click to detect transition type
+  });
+
+  Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container, newPageRawHTML) {
     pageReady();
     closeMobileMenu();
-
   });
 
   // some plugins get bindings onNewPage only that way
   function triggerBody(){
-    _window.scrollTop(0);
+    // _window.scrollTop(0);
     $(window).scroll();
     $(window).resize();
   }
@@ -364,11 +463,15 @@ $(document).ready(function(){
 
 // JQUERY CUSTOM HELPER FUNCTIONS
 $.fn.lines = function () {
-  var content = $(this).html().split("\n");
-  var buildStr = ""
-  $.each(content, function(i, line){
-    buildStr += "<span>" + line + "</span>"
-  })
+  if ( $(this).is('.is-wrapped') === false ) { // prevent double wrapping
+    $(this).addClass('is-wrapped')
+    var content = $(this).html().split("\n");
+    var buildStr = ""
+    $.each(content, function(i, line){
+      buildStr += "<span>" + line + "</span>"
+    })
 
-  $(this).html(buildStr)
+    $(this).html(buildStr)
+  }
+
 };

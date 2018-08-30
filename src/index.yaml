@@ -2,8 +2,12 @@ ProjectTitle: Bridge
 
 PageList:
 - file: homepage.html
-  ready: 20
+  ready: 40
 - file: project.html
+  ready: 20
+- file: cases.html
+  ready: 0
+- file: contact.html
   ready: 0
 - file: about.html
   ready: 0

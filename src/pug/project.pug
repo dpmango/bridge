@@ -1,0 +1,20 @@
+---
+title: Проект
+---
+extends shared/_layout
+block content
+  
+  // PROJECT
+  .project
+    .hero
+      .hero__background
+        video(autoplay muted loop)
+          source(src='/video/jim-beam.mp4' type="video/mp4")
+        // fallback image  
+        img(src="img/slide.png" srcset="img/slide@2x.png 2x")
+      .hero__contents
+        .hero__name Внутреняя
+        .hero__title Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
+        a(href="#").hero__more.link-border о проекте
+  
+  .test(style="height: 1000px")
