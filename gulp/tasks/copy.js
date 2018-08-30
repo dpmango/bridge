@@ -27,6 +27,7 @@ gulp.task('copy:rootfiles', function() {
 
 gulp.task('copy', [
   // 'copy:rootfiles',
+  'copy:video',
   'copy:vendor',
   'copy:fonts'
 ]);

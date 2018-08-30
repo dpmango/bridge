@@ -4,7 +4,7 @@ header.header
     .header__wrapper
       a(href="#").header__logo
         +icon('ico-logo')
-      ul.header__menu
+      ul.header__menu(js-teleport data-teleport-to="mobile-navi-menu" data-teleport-condition="<768")
         li 
           a(href="#") Проекты
         li
@@ -18,3 +18,24 @@ header.header
             .hamburger-inner
         
 // HEADER :: END
+
+
+// MOBILE NAVI
+.mobile-navi
+  .container
+    .mobile-navi__wrapper
+      ul.mobile-navi__menu(data-teleport-target="mobile-navi-menu")
+        // contents to be teleported
+        
+      .mobile-navi__socials.socials
+        .socials__title Мы в соцсетях
+        .socials__list
+          a(href="#" traget="_blank")
+            // some icon
+          a(href="#" traget="_blank")
+            // some icon
+          a(href="#" traget="_blank")
+            // some icon
+            
+      .mobile-navi__credentials Все права защищены © ООО “БРИДЖ маркетинг”
+        

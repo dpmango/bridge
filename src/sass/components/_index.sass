@@ -1,4 +1,24 @@
 // INDEX
 
-.hello
-  display: none
+.socials
+  display: flex
+  align-items: center
+  &__title
+    font-size: 12px
+    padding-right: 10px
+  &__list
+    display: flex
+    align-items: center
+
+    a
+      display: inline-block
+      margin-left: 15px
+      size: 27px
+      display: flex
+      align-items: center
+      justify-content: center
+      text-align: center
+      color: $fontColor
+      border: 1px solid $fontColor
+      border-radius: 50%
+      transition: .25s $ease
