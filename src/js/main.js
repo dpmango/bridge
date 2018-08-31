@@ -20,6 +20,7 @@ $(document).ready(function(){
     // initHeaderScroll();
 
     initSliders();
+    initCustomScroll();
     initTeleport();
     _window.on('resize', debounce(setBreakpoint, 200))
   }
@@ -51,7 +52,7 @@ $(document).ready(function(){
   	})
     .on('click', '[js-scroll-to]', function() { // section scroll
       var el = $('[data-scroll="'+$(this).data('target')+'"]')
-      var offset = $(el).offset().top
+      var offset = $(el).offset().top - 30
 
       anime({
         targets: "html, body",
@@ -227,6 +228,18 @@ $(document).ready(function(){
 
   }
 
+
+  ////////////
+  // TELEPORT PLUGIN
+  ////////////
+  function initCustomScroll(){
+
+    var $scrollable = $('[js-page-scroll]');
+    var calcTransform = 0
+    $scrollable.css({
+
+    })
+  }
 
   ////////////
   // TELEPORT PLUGIN

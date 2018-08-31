@@ -1,0 +1,31 @@
+.footer
+  padding: 50px 0
+  &__wrapper
+    display: flex
+    align-items: center
+  &__copy
+    flex: 0 0 370px
+    font-size: 16px
+    line-height: 1.33
+    br
+      display: none
+  &__cta
+    flex: 1 1 auto
+    text-align: center
+
+  &__socials
+    flex: 0 0 370px
+    display: flex
+    text-align: right
+    .socials
+      margin-left: auto
+
++r($hd)
+  .footer
+    &__copy
+      // font-size: 14px
+      flex-basis: 220px
+      br
+        display: block
+    &__socials
+      flex-basis: 220px

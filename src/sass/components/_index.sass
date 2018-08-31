@@ -19,9 +19,29 @@
       justify-content: center
       text-align: center
       color: $fontColor
-      border: 1px solid $fontColor
+      // border: 1px solid $fontColor
       border-radius: 50%
       transition: .25s $ease
+      .ico
+        font-size: 27px
+        // &-social-facebook
+        //   &:hover
+        //     fill: $facebook
+        // &-social-instagram
+        //   &:hover
+        //     fill: $instagram
+        // &-social-youtube
+        //   &:hover
+        //     fill: $youtube
+
+.h1-title
+  font-size: 50px
+  font-weight: 900
+
+.h2-title
+  font-weight: 700
+  font-size: 35px
+  margin: 0
 
 // hover effect for the links
 .link-border
@@ -40,3 +60,26 @@
   &:hover
     &::after
       right: 0
+
+// links
+.primary-link
+  font-size: 25px
+  font-weight: 400
+  padding: 10px 0
+  &::after
+    height: 5px
+    right: 0
+  &:hover
+    &::after
+      right: 100%
+
+.bold-link
+  font-size: 35px
+  font-weight: 700
+  padding: 10px 0
+  &::after
+    height: 5px
+
+// paragraph
+.p-primary
+  font-size: 25px

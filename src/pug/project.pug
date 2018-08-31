@@ -5,13 +5,12 @@ extends shared/_layout
 block content
   
   // PROJECT
-  .project
+  .project(js-page-scroll)
     .hero.hero--project
       .hero__background
         video(autoplay muted loop)
           source(src='/video/jim-beam.mp4' type="video/mp4")
-        // fallback image  
-        img(src="img/slide.png" srcset="img/slide@2x.png 2x")
+
       .hero__contents
         .hero__name Внутреняя
         .hero__title Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
@@ -19,10 +18,66 @@ block content
       
     .hero-scroll
       .hero-scroll__button(js-scroll-to data-target="section-name")
-        
-    
+        +icon('ico-scroll-arrow-down')
+      
+    // section
     .section-text(data-scroll="section-name")
       .container
         h2.h2-title Разработка креативной <br/> идеи для вирусного <br/> ролика
     
-    .test(style="height: 1000px;")
+    // section
+    .section-video
+      .video-player
+        .video-player__placeholder
+          img(src="img/slide.png" srcset="img/slide@2x.png 2x")
+        
+        .video-player__wrapper.video-player__wrapper--16-9
+          video()
+            source(src='/video/sevidov.mp4' type="video/mp4")
+      
+      .section-video__link
+        .container
+          a(href='#' target="_blank").link-border.primary-link смотреть ролик на  YouTube
+    
+    // section
+    .section-text
+      .container
+        h2.h2-title Live-съемка на 6 локациях <br/>в Москве и 7 локациях в<br/> Дубаи
+        p.p-primary Тайминг на продюссирование съемки - <br> 3 недели
+
+    // section
+    .section-video
+      .video-player
+        .video-player__placeholder
+          img(src="img/slide.png" srcset="img/slide@2x.png 2x")
+        
+        .video-player__wrapper.video-player__wrapper--16-9
+          video()
+            source(src='/video/sevidov.mp4' type="video/mp4")
+    
+    // section
+    .section-next
+      .container
+        a(href="homepage.html").section-next__link
+          .t-primary Следующий проект
+          .h1-title.link-border Косплей живет в каждом
+    
+    // Footer
+    .footer
+      .container
+        .footer__wrapper
+          .footer__copy Все права защищены <br>© ООО “БРИДЖ маркетинг”
+          .footer__cta
+            a(href="cases.html").link-border.bold-link Все проекты
+
+          .footer__socials.socials
+            .socials__title Мы в соцсетях
+            .socials__list
+              a(href="#" traget="_blank")
+                +icon('ico-social-facebook')
+              a(href="#" traget="_blank")
+                +icon('ico-social-instagram')
+              a(href="#" traget="_blank")
+                +icon('ico-social-youtube')
+                
+          
