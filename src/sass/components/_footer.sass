@@ -15,10 +15,8 @@
 
   &__socials
     flex: 0 0 370px
-    display: flex
     text-align: right
-    .socials
-      margin-left: auto
+    justify-content: flex-end
 
 +r($hd)
   .footer
@@ -29,3 +27,5 @@
         display: block
     &__socials
       flex-basis: 220px
+      .socials__title
+        display: none

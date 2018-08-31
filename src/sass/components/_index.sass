@@ -10,29 +10,52 @@
     display: flex
     align-items: center
 
-    a
-      display: inline-block
-      margin-left: 15px
-      size: 27px
-      display: flex
-      align-items: center
-      justify-content: center
-      text-align: center
-      color: $fontColor
-      // border: 1px solid $fontColor
-      border-radius: 50%
-      transition: .25s $ease
-      .ico
-        font-size: 27px
-        // &-social-facebook
-        //   &:hover
-        //     fill: $facebook
-        // &-social-instagram
-        //   &:hover
-        //     fill: $instagram
-        // &-social-youtube
-        //   &:hover
-        //     fill: $youtube
+  &__icon
+    position: relative
+    display: inline-block
+    margin-left: 15px
+    // size: 38px
+    size: 27px
+    color: $fontColor
+    border: 2px solid $fontColor
+    border-radius: 50%
+    transition: .25s $ease
+    &:hover
+      color: white
+    .ico
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%,-50%)
+    &--facebook
+      font-size: 14px
+      &:hover
+        background-color: $facebook
+        border-color: $facebook
+    &--instagram
+      font-size: 13px
+      &:hover
+        background-color: $instagram
+        border-color: $instagram
+    &--youtube
+      font-size: 9px
+      &:hover
+        background-color: $youtube
+        border-color: $youtube
+
+  &--big
+    .socials
+      &__title
+        font-size: 16px
+
+      &__icon
+        size: 38px
+        &--facebook
+          font-size: 20px
+        &--instagram
+          font-size: 19px
+        &--youtube
+          font-size: 14px
 
 .h1-title
   font-size: 50px
