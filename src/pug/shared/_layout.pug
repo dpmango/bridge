@@ -1,11 +1,10 @@
 include _mixins
 doctype html
-html(lang="en")
+html(lang="ru")
   head
     include _head
 
   body(class=bodyClass)
-    // place where pjax bindings happen's
     #barba-wrapper
       block preloader
         include ../components/_preloader
@@ -14,7 +13,8 @@ html(lang="en")
         include ../components/_header
     
       // what should be changed with every pjax
-      .page(class=outClass)
+      .page
+        div(js-set-body-class data-class=bodyClass)
         .page__content
           block content
           

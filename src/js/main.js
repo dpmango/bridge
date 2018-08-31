@@ -16,6 +16,7 @@ $(document).ready(function(){
     legacySupport();
     initPreloader();
     updateHeaderActiveClass();
+    setBodyClass();
     initWrapText();
     // initHeaderScroll();
 
@@ -121,6 +122,36 @@ $(document).ready(function(){
     });
   }
 
+  // UPDATE BODY CLASS ON PJAX
+  function setBodyClass(){
+    var source = $('[js-set-body-class]').last();
+    var sourceClass = source.data("class");
+    var body = $('body');
+    var bodyClasses = body.attr('class').split(" ")
+    var possibleClasses = ["homepage", "page-dark"]
+
+    // console.log('sourceClass', sourceClass)
+    // console.log('bodyClasses', bodyClasses)
+
+    if ( source ){
+      if ( bodyClasses.indexOf(sourceClass) === -1 ){
+        body.addClass(sourceClass) // append new class if not present
+      }
+      // remove old
+      $.each(bodyClasses, function(i, c){
+        // remove if not a source and included in possibles
+        if ( c !== sourceClass
+             && possibleClasses.indexOf(c) !== - 1
+           ){
+             // console.log('removing', c)
+          body.removeClass(c)
+        }
+      })
+
+    }
+
+  }
+
   ///////////
   // WRAP LONG TEXT TO EACH LINE SPAN
   //////////
@@ -136,13 +167,29 @@ $(document).ready(function(){
   //////////
 
   function initSliders(){
+
+    // cases slider
+    var casesSwiper = new Swiper('[js-cases-swiper]', {
+      slideClass: "cases__slide",
+      slidesPerView: 'auto',
+      freeMode: true,
+      // grabCursor: true,
+      resistanceRatio: 0.85,
+      freeModeMomentumRatio: 0.7,
+      freeModeMomentumVelocityRatio: 0.8,
+      freeModeMomentumBounceRatio: 0.6,
+      freeModeSticky: true,
+      scrollbar: {
+        el: '.swiper-scrollbar',
+        draggable: true,
+      },
+    });
+
     // https://codepen.io/dangodev/pen/bpjrRg
 
     // HOMEPAGE SLIDER
     var $slider = $('[js-home-slider]');
-
     if ( $slider.length === 0 ){ return }
-
     var $slides = $slider.find('.home__slide');
     var numberOfSlides = $slides.length
     var activeSlide = 0 // first is the default

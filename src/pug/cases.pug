@@ -1,8 +1,37 @@
 ---
 title: Проекты
+bodyClass: dark-page
 ---
 extends shared/_layout
 block content
   
   // CASES
   .cases
+    .cases__wrapper
+      .cases__slider.swiper-container(js-cases-swiper)
+        .swiper-wrapper
+          // slide
+          .cases__slide.case-card
+            .case-card__image
+              img(src='img/caseCover_1.png' srcset='img/caseCover_1@2x.png 2x')
+            .case-card__content
+              .case-card__name JIM BEAM
+              .case-card__intro Сорваться на концерт <br>The Chemical Brothers
+          // slide
+          .cases__slide.case-card
+            .case-card__image
+              img(src='img/caseCover_2.png' srcset='img/caseCover_2@2x.png 2x')
+            .case-card__content
+              .case-card__name The Macallan
+              .case-card__intro Изнанка глянцевых <br>фотосессий
+          // slide    
+          .cases__slide.case-card
+            .case-card__image
+              img(src='img/caseCover_3.png' srcset='img/caseCover_3@2x.png 2x')
+            .case-card__content
+              .case-card__name TELE 2
+              .case-card__intro Косплей живет в каждом
+          
+        .swiper-scrollbar
+            
+                  
