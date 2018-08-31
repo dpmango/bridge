@@ -6,7 +6,7 @@ block content
   
   // PROJECT
   .project
-    .hero
+    .hero.hero--project
       .hero__background
         video(autoplay muted loop)
           source(src='/video/jim-beam.mp4' type="video/mp4")
@@ -16,5 +16,13 @@ block content
         .hero__name Внутреняя
         .hero__title Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
         a(href="#").hero__more.link-border о проекте
-  
-  .test(style="height: 1000px")
+      
+    .hero-scroll
+      .hero-scroll__button(js-scroll-to data-target="section-name")
+        
+    
+    .section-text(data-scroll="section-name")
+      .container
+        h2.h2-title Разработка креативной <br/> идеи для вирусного <br/> ролика
+    
+    .test(style="height: 1000px;")

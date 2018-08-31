@@ -9,6 +9,11 @@
   z-index: 1
   overflow: hidden
   color: white
+  &--project
+    .hero__title
+      span::after
+        display: none
+
   &__background
     position: absolute 0
     font-size: 0
@@ -72,3 +77,15 @@
     display: inline-block
     cursor: pointer
     font-size: 20px
+
+.hero-scroll
+  margin-top: 10px
+  &__button
+    size: 75px
+    margin: 0 auto
+    background: red
+    display: flex
+    align-items: center
+    justify-content: center
+    cursor: pointer
+    border-radius: 50%

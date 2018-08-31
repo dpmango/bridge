@@ -6,6 +6,8 @@ $(document).ready(function(){
 
   var _window = $(window);
   var _document = $(document);
+  var easingSwing = [.02, .01, .47, 1]; // default jQuery easing for anime.js
+  var moveEasing = [0.77, 0, 0.175, 1];
 
   ////////////
   // READY - triggered when PJAX DONE
@@ -15,7 +17,7 @@ $(document).ready(function(){
     initPreloader();
     updateHeaderActiveClass();
     initWrapText();
-    initHeaderScroll();
+    // initHeaderScroll();
 
     initSliders();
     initTeleport();
@@ -43,14 +45,21 @@ $(document).ready(function(){
 
 
   // Prevent # behavior
-	_document
+	$(document)
     .on('click', '[href="#"]', function(e) {
   		e.preventDefault();
   	})
-    .on('click', 'a[href^="#section"]', function() { // section scroll
-      var el = $(this).attr('href');
-      $('body, html').animate({
-          scrollTop: $(el).offset().top}, 1000);
+    .on('click', '[js-scroll-to]', function() { // section scroll
+      var el = $('[data-scroll="'+$(this).data('target')+'"]')
+      var offset = $(el).offset().top
+
+      anime({
+        targets: "html, body",
+        scrollTop: offset,
+        easing: moveEasing, // swing
+        duration: 800
+      });
+
       return false;
     })
 
@@ -130,6 +139,9 @@ $(document).ready(function(){
 
     // HOMEPAGE SLIDER
     var $slider = $('[js-home-slider]');
+
+    if ( $slider.length === 0 ){ return }
+
     var $slides = $slider.find('.home__slide');
     var numberOfSlides = $slides.length
     var activeSlide = 0 // first is the default
@@ -150,8 +162,18 @@ $(document).ready(function(){
 
 
     // hammer.js instance
-    var sliderManager = new Hammer.Manager($slider.get(0));
-    sliderManager.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));
+    var sliderManager = new Hammer.Manager(document.querySelector('[js-home-slider]'), {
+      // domEvents: true
+    });
+    sliderManager.add(
+      new Hammer.Pan({
+        direction: Hammer.DIRECTION_HORIZONTAL,
+        threshold: 0,
+        // domEvents: true,
+        pointers: 0 }
+      )
+    );
+
     sliderManager.on('pan', function(e) {
       var movePower = (e.deltaX * 1.2)
       var percentage = 100 / numberOfSlides * movePower / window.innerWidth;
@@ -249,8 +271,6 @@ $(document).ready(function(){
   //////////
   // BARBA PJAX
   //////////
-  var easingSwing = [.02, .01, .47, 1]; // default jQuery easing for anime.js
-  var moveEasing = [0.77, 0, 0.175, 1];
 
   Barba.Pjax.Dom.containerClass = "page";
 
