@@ -55,21 +55,31 @@ $(document).ready(function(){
       var el = $('[data-scroll="'+$(this).data('target')+'"]')
       var offset = $(el).offset().top - 30
 
-      anime({
-        targets: "html, body",
-        scrollTop: offset,
-        easing: moveEasing, // swing
-        duration: 800
-      });
+      scrollDocumentTo(offset);
 
       return false;
     })
 
 
+  // PRELOADER FUNCTION
   function initPreloader(){
     setTimeout(function(){
       $('.preloader').addClass('is-loaded')
     }, 1500)
+  }
+
+  // SCROLL DOCUMENT
+  function scrollDocumentTo(to, cb){
+    var scrollAnime = anime({
+      targets: "html, body",
+      scrollTop: to,
+      easing: moveEasing, // swing
+      duration: 800
+    });
+
+    if ( cb !== undefined ){
+      scrollAnime.complete = cb
+    }
   }
 
   // HEADER SCROLL
@@ -160,6 +170,65 @@ $(document).ready(function(){
       $(title).lines()
     })
   }
+
+  ///////////////
+  // VIDEO PLAYER
+  ///////////////
+
+  _document
+    .on('click', '[js-video-player]', function(){
+      var $this = $(this);
+      var video = $this.find('video').get(0);
+
+      var thisHeight = $this.outerHeight()
+      var wHeight = _window.height()
+      var offsetTop = $this.offset().top
+      var offsetBottom = offsetTop + thisHeight
+
+      var calcHeightOffset = ((offsetTop - offsetBottom) + wHeight) / 2
+      // don't offset when viewport is smaller
+      var moveOffset = calcHeightOffset >= 0 ? calcHeightOffset : 0
+      var scrollTarget = offsetTop - moveOffset
+
+      var scrollListener = debounce(function(){
+        var wScroll = _window.scrollTop();
+        // stops on 20% before viewport exit
+        var sPastTop = wScroll < (offsetTop - wHeight + (offsetTop * 0.2))
+        var sPastBottom = wScroll > (offsetBottom - (offsetBottom * 0.2))
+
+        if ( sPastTop || sPastBottom ){
+          video.pause();
+          window.removeEventListener('scroll', scrollListener, false); // clear debounce func
+        }
+      }, 200)
+
+      // functions bindings
+      if ( !$this.is('.is-playing') ){
+        playVideo();
+      }  else {
+        // a.k.a second click
+        if ( video.paused ){
+          playVideo();
+        } else {
+          window.removeEventListener('scroll', scrollListener, false); // clear debounce func
+          video.pause();
+        }
+      }
+
+      function playVideo(){
+        video.play();
+
+        // scroll to the viewport
+        scrollDocumentTo(scrollTarget, function(){
+          // pause on exiting viewport
+          window.addEventListener('scroll', scrollListener, false);
+        })
+      }
+
+      $this.addClass('is-playing');
+
+      return false
+    })
 
 
   //////////

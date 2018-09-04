@@ -1,5 +1,13 @@
 
+// keps the aspect ration
+.media-wrapper
+  position: relative
+  z-index: 1
+  width: 100%
+  &--16-9
+    padding-bottom: 56%
 
+// video player
 .video-player
   position: relative
   overflow: hidden
@@ -22,15 +30,32 @@
     transition: opacity 0.5s cubic-bezier(0.16, 1.08, 0.38, 0.98);
     display: flex
     align-items: center
-  &__wrapper
-    position: relative
-    z-index: 1
-    width: 100%
-    &--16-9
-      padding-bottom: 56%
+
   video
     position: absolute
     width: 100%
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
+
+
+// image gallery
+.image-gallery
+  &__image
+    // fill the wrapper
+    position: absolute 0
+    font-size: 0
+    // must use inline styles
+    background-size: cover
+    background-repeat: no-repeat
+    background-position: center center
+  img
+    // position: absolute
+    // width: 100%
+    // top: 50%
+    // left: 50%
+    // transform: translate(-50%, -50%)
+
+  &__list
+    // modal wrapper
+    display: none
