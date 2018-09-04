@@ -44,18 +44,26 @@ block content
       .container
         h2.h2-title Live-съемка на 6 локациях <br/>в Москве и 7 локациях в<br/> Дубаи
         p.p-primary Тайминг на продюссирование съемки - <br> 3 недели
-
+          
     // section
     .section-image
-      .image-gallery
-        .media-wrapper.media-wrapper--16-9
-          .image-gallery__image(style="background-image: url('../img/photo.jpg')")
-        .image-gallery__list
-          // hidden image to be displayed in modal
-          span(data-image="../img/photo.jpg")
-          span(data-image="../img/photo.jpg")
-          span(data-image="../img/photo.jpg")
-          
+      .image-gallery.swiper-container(js-swiper-gallery)
+        .swiper-wrapper
+          .media-wrapper.media-wrapper--16-9
+            .image-gallery__image(style="background-image: url('../img/photo.jpg')")
+              .section-image__text смотреть фото
+          // slide
+          .media-wrapper.media-wrapper--16-9
+            .image-gallery__image(style="background-image: url('../img/photo.jpg')")
+        
+          // slide
+          .media-wrapper.media-wrapper--16-9
+            .image-gallery__image(style="background-image: url('../img/photo.jpg')")
+      
+        // navigator
+        .image-gallery__prev
+        .image-gallery__next
+
     // section
     .section-next
       .container

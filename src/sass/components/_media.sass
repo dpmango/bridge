@@ -2,6 +2,8 @@
 // keps the aspect ration
 .media-wrapper
   position: relative
+  display: flex
+  flex-direction: column
   z-index: 1
   width: 100%
   &--16-9
@@ -39,8 +41,21 @@
     transform: translate(-50%, -50%)
 
 
-// image gallery
+// image gallery (slider on swiper js)
 .image-gallery
+  position: relative
+  overflow: hidden
+  width: 100%
+  height: 100%
+  background: #000
+  > .swiper-wrapper
+    // transition-timing-function: $easing
+  // &__slide
+  .media-wrapper
+    flex: 0 0 auto
+    width: calc(100% - 88px)
+    &:last-child
+      width: 100%
   &__image
     // fill the wrapper
     position: absolute 0
@@ -59,3 +74,25 @@
   &__list
     // modal wrapper
     display: none
+
+  &__prev, &__next
+    position: absolute
+    top: 0
+    bottom: 0
+    z-index: 2
+    width: 50%
+
+  &__prev
+    left: 0
+    cursor: url('../img/controls/cursor-prev.svg') 27 27, pointer
+
+  &__next
+    right: 0
+    cursor: url('../img/controls/cursor-next.svg') 27 27, pointer
+
+  &.is-last-active
+    .image-gallery
+      &__prev
+        width: 100%
+      &__next
+        width: 0

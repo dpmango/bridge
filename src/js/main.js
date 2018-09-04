@@ -254,6 +254,33 @@ $(document).ready(function(){
       },
     });
 
+    // cases slider
+    var gallerySwiper = new Swiper('[js-swiper-gallery]', {
+      slideClass: "media-wrapper",
+      slidesPerView: 'auto',
+      freeMode: true,
+      // grabCursor: true,
+      resistanceRatio: 0.85,
+      freeModeMomentumRatio: 0.7,
+      freeModeMomentumVelocityRatio: 0.8,
+      freeModeMomentumBounceRatio: 0.6,
+      freeModeSticky: true,
+      navigation: {
+        nextEl: '.image-gallery__next',
+        prevEl: '.image-gallery__prev',
+      },
+      speed: 500,
+
+    });
+
+    gallerySwiper.on('slideChange', function(){
+      if ( gallerySwiper.isEnd ){
+        $('[js-swiper-gallery]').addClass('is-last-active');
+      } else {
+        $('[js-swiper-gallery]').removeClass('is-last-active');
+      }
+    })
+
     // https://codepen.io/dangodev/pen/bpjrRg
 
     // HOMEPAGE SLIDER
