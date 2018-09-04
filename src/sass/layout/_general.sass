@@ -26,6 +26,9 @@ body, html
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
 
+  // max-height: 100vh
+  // overflow: hidden
+
 .page
   display: flex
   flex-direction: column
@@ -34,6 +37,14 @@ body, html
     flex: 1 0 auto
     display: flex
     flex-direction: column
+
+[js-page-scroll]
+  // position: fixed
+  // top: 0
+  // left: 0
+  // right: 0
+  will-change: transform
+  transition: transform .05s $ease
 
 .container
   max-width: 1920px

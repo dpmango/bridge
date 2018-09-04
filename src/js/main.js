@@ -21,7 +21,7 @@ $(document).ready(function(){
     // initHeaderScroll();
 
     initSliders();
-    initCustomScroll();
+    // initCustomScroll();
     initTeleport();
     _window.on('resize', debounce(setBreakpoint, 200))
   }
@@ -70,6 +70,14 @@ $(document).ready(function(){
 
   // SCROLL DOCUMENT
   function scrollDocumentTo(to, cb){
+    // var $scrollable = $('[js-page-scroll]');
+    //
+    // $scrollable.css({
+    //   'transform': 'translate3d(0,-'+to+'px,0)'
+    // }, function(){
+    //
+    // })
+
     var scrollAnime = anime({
       targets: "html, body",
       scrollTop: to,
@@ -379,9 +387,35 @@ $(document).ready(function(){
 
     var $scrollable = $('[js-page-scroll]');
     var calcTransform = 0
-    $scrollable.css({
+    var scrollDistance = 0
+    var minScrollDistance = 0
+    var maxScrollDistane = $scrollable.height() - _window.height();
 
+    $scrollable.on('mousewheel DOMMouseScroll', function(e){
+      var delta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
+
+      scrollDistance += e.originalEvent.deltaY * 0.8 // slow down by 20%
+      if ( scrollDistance < minScrollDistance ){ scrollDistance = minScrollDistance }
+      if ( scrollDistance > maxScrollDistane ){ scrollDistance = maxScrollDistane }
+
+      scrollDocumentTo(scrollDistance)
+
+      // var page = document.querySelector('[js-page-scroll]')
+      // TweenLite.to(page, 1, {
+      //   // y: scrollDistance
+      //   left: 200
+      // });
+
+      // anime({
+      //   targets: $scrollable.get(0),
+      //   translateY: '-' + scrollDistance,
+      //   easing: 'easeInOutCubic',
+      //   duration: 10
+      // });
+
+      return false
     })
+
   }
 
   ////////////
