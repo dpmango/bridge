@@ -18,6 +18,7 @@ $(document).ready(function(){
     updateHeaderActiveClass();
     setBodyClass();
     initWrapText();
+    _window.on('resize', debounce(function(){initWrapText(true)}, 200))
     initHeaderScroll();
 
     initSliders();
@@ -197,9 +198,9 @@ $(document).ready(function(){
   ///////////
   // WRAP LONG TEXT TO EACH LINE SPAN
   //////////
-  function initWrapText(){
+  function initWrapText(resized){
     $('.hero__title').each(function(i,title){
-      $(title).lines()
+      $(title).lines(resized)
     })
   }
 
@@ -696,11 +697,21 @@ $(document).ready(function(){
 
 
 // JQUERY CUSTOM HELPER FUNCTIONS
-$.fn.lines = function () {
-  if ( $(this).is('.is-wrapped') === false ) { // prevent double wrapping
-    $(this).addClass('is-wrapped')
-    var content = $(this).html().split("\n");
+$.fn.lines = function (resized) {
+  if ( $(this).is('.is-wrapped') === false || resized) { // prevent double wrapping
     var buildStr = ""
+
+    if ( !resized ){
+      $(this).addClass('is-wrapped')
+      // backup content
+      $(this).attr('data-text-original', $(this).html())
+      var content = $(this).html().split("\n");
+
+    } else {
+      // assume that's in wrapped onReady
+      var content = $(this).attr('data-text-original').split("\n")
+    }
+
     $.each(content, function(i, line){
       buildStr += "<span>" + line + "</span>"
     })

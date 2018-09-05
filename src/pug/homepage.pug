@@ -9,6 +9,19 @@ block content
   .home
     .home__slider
       .home__slidable(js-home-slider)
+        // slide
+        .home__slide.hero
+          .hero__background
+            video(autoplay muted loop)
+              source(src='/video/macallan.mp4' type="video/mp4")
+            // fallback image  
+            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
+          .hero__contents
+            .hero__name The Macallan
+            a(href="project.html").hero__title Изнанка &#10; глянцевых &#10; фото-сессий
+            a(href="project.html").hero__more.link-border о проекте
+      
+        // slide
         .home__slide.hero
           .hero__background
             video(autoplay muted loop)
@@ -24,22 +37,47 @@ block content
         .home__slide.hero
           .hero__background
             video(autoplay muted loop)
-              source(src='/video/sevidov.mp4' type="video/mp4")
+              source(src='/video/bigbon.mp4' type="video/mp4")
+            // fallback image  
             img(src="img/slide.png" srcset="img/slide@2x.png 2x")
           .hero__contents
-            .hero__name СЕВИОДОВ
-            a(href="project.html").hero__title slide 2
+            .hero__name Big Bon
+            a(href="project.html").hero__title Ты решаешь, &#10; как ты отдыхаешь
+            a(href="project.html").hero__more.link-border о проекте
+      
+        // slide
+        .home__slide.hero
+          .hero__background
+            video(autoplay muted loop)
+              source(src='/video/bigbon.mp4' type="video/mp4")
+            // fallback image  
+            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
+          .hero__contents
+            .hero__name Tele 2
+            a(href="project.html").hero__title Косплей &#10; живет в каждом
             a(href="project.html").hero__more.link-border о проекте
         
         // slide
         .home__slide.hero
           .hero__background
             video(autoplay muted loop)
-              source(src='/video/kolesnikov.mp4' type="video/mp4")
+              source(src='/video/sevidov.mp4' type="video/mp4")
             // fallback image  
             img(src="img/slide.png" srcset="img/slide@2x.png 2x")
           .hero__contents
-            .hero__name КОЛЕСНИКОВ
-            a(href="project.html").hero__title slide 3
+            .hero__name The Macallan
+            a(href="project.html").hero__title Премьера песни &#10; Антона Севидова &#10; Avoid
+            a(href="project.html").hero__more.link-border о проекте
+        
+        // slide
+        .home__slide.hero
+          .hero__background
+            video(autoplay muted loop)
+              source(src='/video/flash-up.mp4' type="video/mp4")
+            // fallback image  
+            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
+          .hero__contents
+            .hero__name Flash Up
+            a(href="project.html").hero__title В плавках &#10; с горы? &#10; Легко!
             a(href="project.html").hero__more.link-border о проекте
       
