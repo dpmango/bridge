@@ -7,7 +7,9 @@
     "start": "gulp",
     "build": "gulp build --production",
     "lint": "eslint --ignore-pattern 'src/js/lib/' --cache --format=node_modules/eslint-formatter-pretty src/js/",
-    "surge": "gulp build --production && surge --project ./dist --domain bridge-marketing.surge.sh"
+    "surge": "surge --project ./dist --domain bridge-marketing.surge.sh",
+    "netlify": "netlify deploy",
+    "deploy": "yarn build && yarn netlify"
   },
   "author": "Sergey Khmelevskoy <sergey@khmelevskoy.co>",
   "license": "ISC",
