@@ -18,10 +18,10 @@ $(document).ready(function(){
     updateHeaderActiveClass();
     setBodyClass();
     initWrapText();
-    // initHeaderScroll();
+    initHeaderScroll();
 
     initSliders();
-    // initCustomScroll();
+    initCustomScroll();
     initTeleport();
     _window.on('resize', debounce(setBreakpoint, 200))
   }
@@ -94,26 +94,50 @@ $(document).ready(function(){
   // add .header-static for .page or body
   // to disable sticky header
   function initHeaderScroll(){
+
+    var prevScroll = 0; // store to check delta
     _window.on('scroll', throttle(function(e) {
       var vScroll = _window.scrollTop();
-      var header = $('.header').not('.header--static');
-      var headerHeight = header.height();
-      var firstSection = _document.find('.page__content div:first-child()').height() - headerHeight;
-      var visibleWhen = Math.round(_document.height() / _window.height()) >  2.5
+      var header = $('[js-header-scroll]');
+      var isDown
 
-      if (visibleWhen){
-        if ( vScroll > headerHeight ){
-          header.addClass('is-fixed');
-        } else {
-          header.removeClass('is-fixed');
-        }
-        if ( vScroll > firstSection ){
-          header.addClass('is-fixed-visible');
-        } else {
-          header.removeClass('is-fixed-visible');
-        }
+      isDown = vScroll >= prevScroll ? true : false
+
+      if ( isDown ){
+        header.addClass('is-scrolling-down');
+      } else {
+        header.removeClass('is-scrolling-down');
       }
-    }, 10));
+
+      // BACKGROUND COLOR DETECTOR
+      controlHeaderColor(vScroll);
+
+      prevScroll = vScroll
+    }, 50));
+  }
+
+  function controlHeaderColor(vScroll){
+    // Cache selectors
+    var sections = $('[data-nav-color]');
+    var headerHeight = $('.header').height();
+    var headerDiffInPaddings = 25
+    // Collect arr of past scroll elements
+    var cur = sections.map(function(){
+      var elTop = $(this).offset().top - parseInt($(this).css('marginTop'))
+      if (elTop < vScroll + ((headerHeight + headerDiffInPaddings) / 2)){
+        return this
+      }
+    });
+
+    // Get current element
+    cur = $(cur[cur.length-1]);
+    var headerClass = cur && cur.length ? cur.data('nav-color') : ""
+
+    if ( headerClass === "black" ){
+      $('.header').addClass('is-dark')
+    } else if ( headerClass === "white" ) {
+      $('.header').removeClass('is-dark')
+    }
   }
 
 
@@ -398,7 +422,7 @@ $(document).ready(function(){
       if ( scrollDistance < minScrollDistance ){ scrollDistance = minScrollDistance }
       if ( scrollDistance > maxScrollDistane ){ scrollDistance = maxScrollDistane }
 
-      scrollDocumentTo(scrollDistance)
+      // scrollDocumentTo(scrollDistance)
 
       // var page = document.querySelector('[js-page-scroll]')
       // TweenLite.to(page, 1, {
@@ -683,5 +707,80 @@ $.fn.lines = function () {
 
     $(this).html(buildStr)
   }
-
 };
+
+
+// SCROLL FUNCTION
+// https://codepen.io/osublake/pen/QqPqbN
+
+var html = document.documentElement;
+var body = document.body;
+
+var scroller = {
+  target: document.querySelector("#scroller-js"),
+  ease: 0.05, // <= scroll speed
+  endY: 0,
+  y: 0,
+  resizeRequest: 1,
+  scrollRequest: 0,
+};
+
+var requestId = null;
+
+TweenLite.set(scroller.target, {
+  rotation: 0.01,
+  force3D: true
+});
+
+window.addEventListener("load", onLoad);
+
+function onLoad() {
+  updateScroller();
+  window.focus();
+  window.addEventListener("resize", onResize);
+  document.addEventListener("scroll", onScroll);
+}
+
+function updateScroller() {
+
+  var resized = scroller.resizeRequest > 0;
+
+  if (resized) {
+    var height = scroller.target.clientHeight;
+    body.style.height = height + "px";
+    scroller.resizeRequest = 0;
+  }
+
+  var scrollY = window.pageYOffset || html.scrollTop || body.scrollTop || 0;
+
+  scroller.endY = scrollY;
+  scroller.y += (scrollY - scroller.y) * scroller.ease;
+
+  if (Math.abs(scrollY - scroller.y) < 0.05 || resized) {
+    scroller.y = scrollY;
+    scroller.scrollRequest = 0;
+  }
+
+  TweenLite.set(scroller.target, {
+    y: -scroller.y
+  });
+
+  requestId = scroller.scrollRequest > 0 ? requestAnimationFrame(updateScroller) : null;
+}
+
+function onScroll(e) {
+  // TODO
+  // decrease speed
+
+  scroller.scrollRequest++;
+  if (!requestId) {
+    requestId = requestAnimationFrame(updateScroller);
+  }
+}
+
+function onResize() {
+  scroller.resizeRequest++;
+  if (!requestId) {
+    requestId = requestAnimationFrame(updateScroller);
+  }
+}

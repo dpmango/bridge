@@ -1,11 +1,12 @@
 /* HEADER
 .header
-  position: absolute
+  position: fixed
   top: 0
   right: 0
   left: 0
   z-index: 9
   color: white
+  pointer-events: none
   &.is-dark
     color: $fontColor
 
@@ -47,6 +48,20 @@
   &__hamburger
     display: none
     padding-left: 20px
+
+  &__logo, &__menu, &__hamburger
+    pointer-events: all
+    will-change: transform
+    transition-property: transform, opacity, color
+    transition-duration: .4s
+    transition-timing-function: $ease
+
+  // &.is-scrolling-down
+  //   .header
+  //     &__logo, &__menu, &__hamburger
+  //       opacity: 0
+  //       pointer-events: none
+  //       transform: translate(0,-10px)
 
 
 +r($desktop)

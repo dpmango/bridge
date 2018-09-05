@@ -4,9 +4,9 @@ PageList:
 - file: homepage.html
   ready: 50
 - file: project.html
-  ready: 40
+  ready: 50
 - file: cases.html
-  ready: 30
+  ready: 50
 - file: contact.html
   ready: 0
 - file: about.html

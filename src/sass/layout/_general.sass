@@ -28,23 +28,39 @@ body, html
 
   // max-height: 100vh
   // overflow: hidden
+body
+  overflow-y: scroll
 
 .page
-  display: flex
-  flex-direction: column
-  min-height: 100vh
+  // display: flex
+  // flex-direction: column
+  // min-height: 100vh
+    overflow: hidden;
+  position: fixed 0
+  height: 100%
+  width: 100%
+  overflow: hidden
   &__content
     flex: 1 0 auto
     display: flex
     flex-direction: column
+    // position: fixed 0
+    // height: 100%
+    // width: 100%
 
-[js-page-scroll]
+#scroller-js
   // position: fixed
+  position: absolute
+  left: 0
+  right: 0
+  overflow: hidden
   // top: 0
   // left: 0
   // right: 0
   will-change: transform
-  transition: transform .05s $ease
+  backface-visibility: hidden
+  transform-style: preserve-3d
+  // transition: transform .05s $ease
 
 .container
   max-width: 1920px
