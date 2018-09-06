@@ -21,14 +21,14 @@ block content
         +icon('ico-scroll-arrow-down')
       
     // section
-    .section-text(
+    .s-text(
       data-nav-color="black"
       data-scroll="section-name")
       .container
         h2.h2-title Разработка креативной <br/> идеи для вирусного <br/> ролика
     
     // section
-    .section-video
+    .s-video
       .video-player(js-video-player data-nav-color="white")
         .video-player__placeholder
           img(src="img/slide.png" srcset="img/slide@2x.png 2x")
@@ -37,23 +37,23 @@ block content
           video(loop)
             source(src='/video/sevidov.mp4' type="video/mp4")
       
-      .section-video__link(data-nav-color="black")
+      .s-video__link(data-nav-color="black")
         .container
           a(href='https://youtube.com' target="_blank").link-border.primary-link смотреть ролик на  YouTube
     
     // section
-    .section-text(data-nav-color="black")
+    .s-text(data-nav-color="black")
       .container
         h2.h2-title Live-съемка на 6 локациях <br/>в Москве и 7 локациях в<br/> Дубаи
         p.p-primary Тайминг на продюссирование съемки - <br> 3 недели
           
     // section
-    .section-image(data-nav-color="white")
+    .s-image(data-nav-color="white")
       .image-gallery.swiper-container(js-swiper-gallery)
         .swiper-wrapper
           .media-wrapper.media-wrapper--16-9
             .image-gallery__image(style="background-image: url('../img/photo.jpg')")
-              .section-image__text смотреть фото
+              .s-image__text смотреть фото
           // slide
           .media-wrapper.media-wrapper--16-9
             .image-gallery__image(style="background-image: url('../img/photo.jpg')")
@@ -67,9 +67,9 @@ block content
         .image-gallery__next
 
     // section
-    .section-next(data-nav-color="black")
+    .s-next(data-nav-color="black")
       .container
-        a(href="homepage.html").section-next__link
+        a(href="homepage.html").s-next__link
           .t-primary Следующий проект
           .h1-title.link-border Косплей живет в каждом
     

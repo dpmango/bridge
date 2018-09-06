@@ -42,7 +42,11 @@
       display: flex
       flex-direction: column
       align-items: flex-start
-
+    &--centered
+      margin-left: 0
+      .container
+        display: block
+        text-align: center
 
   &__name
     font-size: 35px
@@ -59,6 +63,10 @@
     flex-direction: column
     align-items: flex-start
     // white-space: pre-line
+    &--mega
+      display: block
+      font-size: 140px
+
     span
       display: inline-block
       position: relative
@@ -107,12 +115,14 @@
       font-size: 30px
     &__title
       font-size: 54px
+      &--mega
+        font-size: 100px
 
 +r($desktop)
   .hero
     &__contents
       margin-left: 0
-      
+
     &__name
       font-size: 24px
     &__title

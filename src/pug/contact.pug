@@ -5,4 +5,53 @@ extends shared/_layout
 block content
   
   // CONTACT
-  .contact
+  .contact#scroller-js
+    // hero
+    .hero(data-nav-color="white")
+      .hero__background
+        video(autoplay muted loop)
+          source(src='/video/office.mp4' type="video/mp4")
+        img(src='img/slide.png' srcset='img/slide@2x.png 2x')
+        
+      .hero__contents.hero__contents--centered
+        .container
+          .hero__title.hero__title--mega Контакты
+    
+    // section
+    .s-info(data-nav-color="black")
+      .s-info__wrapper
+        .s-info__text
+          p BRIDGE was founded in 2015 exclusively for Mercedes-Benz. From 2018 on, a new agency will start for the sweets brand, Katjes. antoni’s main idea is focus. We believe that concentrating on one client delivers the best results. Want to know more? We look forward to hearing from you.
+        .s-info__media
+          .reveal(
+            js-reveal 
+            data-type="halflyEnterViewport"
+            data-anim="ltr")
+            img(src='img/contactAbout.jpg' srcset='img/contactAbout@2x.jpg 2x')
+    
+    // contact
+    .contact-office(data-nav-color="black")
+    .reveal(
+      js-reveal 
+      data-type="halflyEnterViewport"
+      data-anim="ltr")
+      img(src='img/contactOfficeMoscow.jpg' srcset='img/contactOfficeMoscow@2x.jpg 2x')
+
+
+    // Footer
+    .footer
+      .container
+        .footer__wrapper
+          .footer__copy Все права защищены <br>© ООО “БРИДЖ маркетинг”
+          .footer__cta
+            // keep the space
+          .footer__socials.socials.socials--big
+            .socials__title Мы в соцсетях
+            .socials__list
+              a(href="#" traget="_blank").socials__icon.socials__icon--facebook
+                +icon('ico-social-facebook')
+              a(href="#" traget="_blank").socials__icon.socials__icon--instagram
+                +icon('ico-social-instagram')
+              a(href="#" traget="_blank").socials__icon.socials__icon--youtube
+                +icon('ico-social-youtube')
+                    

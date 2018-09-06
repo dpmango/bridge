@@ -1,23 +1,23 @@
-.section-text
+.s-text
   margin: 90px 0
   .p-primary
     margin-top: 70px
 
 +r($hd)
-  .section-text
+  .s-text
     margin: 70px 0
 
-.section-video
+.s-video
   position: relative
   margin-bottom: 350px
   &__link
     margin-top: 35px
 
 +r($hd)
-  .section-video
+  .s-video
     margin-bottom: 250px
 
-.section-image
+.s-image
   position: relative
   &__text
     position: absolute
@@ -30,10 +30,10 @@
     left: 65px
 
 +r($hd)
-  .section-image
+  .s-image
 
 // text
-.section-next
+.s-next
   text-align: center
   margin: 300px 0
   &__link
@@ -48,12 +48,12 @@
           right: 0
 
 +r($hd)
-  .section-next
+  .s-next
     margin: 220px 0
 
 
 // extra
-.section-extra
+.s-extra
   margin: 230px 0
   &__slider
     margin-top: 70px
@@ -64,8 +64,48 @@
     max-width: 600px
 
 +r($hd)
-  .section-extra
+  .s-extra
     margin: 170px 0
     &__slide
       flex: 0 0 450px
       max-width: 450px
+
+
+// section info
+// text + image
+.s-info
+  margin: 165px 0
+  &__wrapper
+    display: flex
+    align-items: center
+    margin-left: -30px
+    margin-right: -30px
+  &__text
+    flex: 0 1 50%
+    max-width: 750px
+    // emulate container
+    padding-right: 30px
+    padding-left: calc(30px + 65px)
+    p
+      font-size: 35px
+      font-weight: 900
+      text-transform: uppercase
+      line-height: 1.35
+
+  &__media
+    flex: 0 4 auto
+    margin-left: auto
+    padding: 0 30px
+    img
+      max-width: 100%
+
++r($hd)
+  .s-info
+    &__text
+      p
+        font-size: 25px
+    &__media
+      padding-left: 10%
+
++r($desktop)
+  .s-info

@@ -23,6 +23,7 @@ $(document).ready(function(){
 
     initSliders();
     initCustomScroll();
+    initScrollMonitor();
     initTeleport();
     _window.on('resize', debounce(setBreakpoint, 200))
   }
@@ -467,6 +468,50 @@ $(document).ready(function(){
       return false
     })
 
+  }
+
+  ////////////
+  // REVEAL FUNCTIONS
+  ////////////
+  function initScrollMonitor(){
+    $('[js-reveal]').each(function(i, el){
+
+      var type = $(el).data('type') || "enterViewport"
+
+      if ( type === "halflyEnterViewport"){
+        var scrollListener = debounce(function(){
+          var vScroll = _window.scrollTop();
+          var elTop = $(el).offset().top
+          var triggerPoint = elTop - ( $(el).height() / 2)
+
+          if ( vScroll > triggerPoint ){
+            $(el).addClass('is-animated');
+            window.removeEventListener('scroll', scrollListener, false); // clear debounce func
+          }
+        }, 200)
+
+        window.addEventListener('scroll', scrollListener, false);
+        return
+      }
+
+      // otherwise scrollMonitor
+      // var elWatcher = scrollMonitor.create( $(el) );
+      //
+      // if ( type === "enterViewport" ){
+      //   elWatcher.enterViewport(throttle(function() {
+      //     $(el).addClass('is-animated')
+      //   }, 100, {
+      //     'leading': true
+      //   }));
+      // } else if ( type === "fullyEnterViewport" ) {
+      //   elWatcher.fullyEnterViewport(throttle(function() {
+      //     $(el).addClass('is-animated')
+      //   }, 100, {
+      //     'leading': true
+      //   }));
+      // }
+
+    });
   }
 
   ////////////
