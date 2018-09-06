@@ -47,12 +47,19 @@ $(document).ready(function(){
     });
   }
 
-
-  // Prevent # behavior
+  // GENERIC CLICK HANDLERS
 	$(document)
+    // Prevent # behavior
     .on('click', '[href="#"]', function(e) {
   		e.preventDefault();
   	})
+    // dissallow same link hard refresh for pjax
+    .on('click', 'a[href]', function(e){
+      if(e.currentTarget.href === window.location.href) {
+         e.preventDefault();
+         e.stopPropagation();
+       }
+    })
     .on('click', '[js-scroll-to]', function() { // section scroll
       var el = $('[data-scroll="'+$(this).data('target')+'"]')
       var offset = $(el).offset().top - 30
@@ -108,6 +115,11 @@ $(document).ready(function(){
       if ( isDown ){
         header.addClass('is-scrolling-down');
       } else {
+        header.removeClass('is-scrolling-down');
+      }
+
+      // fixed kinetic scroll hiding header
+      if ( vScroll <= 2 ){
         header.removeClass('is-scrolling-down');
       }
 
