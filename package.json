@@ -13,7 +13,7 @@
   },
   "git": {
     "scripts": {
-      "pre-push": "yarn deploy"
+      "pre-push": "yarn netlify"
     }
   },
   "author": "Sergey Khmelevskoy <sergey@khmelevskoy.co>",
