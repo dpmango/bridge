@@ -11,7 +11,7 @@ gulp.task('images', function(){
       config.src.img + '/**/*.{jpg,png,jpeg,svg,gif}',
       '!' + config.src.img + '/svgo/**/*.*'
     ])
-    .pipe(config.production ? cache(imagemin({interlaced: true})) : util.noop())
+    // .pipe(config.production ? cache(imagemin({interlaced: true})) : util.noop())
     .pipe(gulp.dest(config.dest.img))
 });
 
