@@ -11,6 +11,11 @@
     "netlify": "netlify deploy",
     "deploy": "yarn build && yarn netlify"
   },
+  "git": {
+    "scripts": {
+      "pre-push": "yarn deploy"
+    }
+  },
   "author": "Sergey Khmelevskoy <sergey@khmelevskoy.co>",
   "license": "ISC",
   "dependencies": {
