@@ -3,12 +3,19 @@
   .p-primary
     margin-top: 70px
 
++r($hd)
+  .section-text
+    margin: 70px 0
 
 .section-video
   position: relative
   margin-bottom: 350px
   &__link
     margin-top: 35px
+
++r($hd)
+  .section-video
+    margin-bottom: 250px
 
 .section-image
   position: relative
@@ -22,6 +29,10 @@
     text-transform: uppercase
     left: 65px
 
++r($hd)
+  .section-image
+
+// text
 .section-next
   text-align: center
   margin: 300px 0
@@ -35,3 +46,26 @@
       .h1-title
         &::after
           right: 0
+
++r($hd)
+  .section-next
+    margin: 220px 0
+
+
+// extra
+.section-extra
+  margin: 230px 0
+  &__slider
+    margin-top: 70px
+    overflow: visible
+
+  &__slide
+    flex: 0 0 600px
+    max-width: 600px
+
++r($hd)
+  .section-extra
+    margin: 170px 0
+    &__slide
+      flex: 0 0 450px
+      max-width: 450px

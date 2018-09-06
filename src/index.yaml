@@ -11,3 +11,5 @@ PageList:
   ready: 0
 - file: about.html
   ready: 0
+- file: bonus.html
+  ready: 0

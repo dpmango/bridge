@@ -34,7 +34,7 @@ block content
           img(src="img/slide.png" srcset="img/slide@2x.png 2x")
         
         .media-wrapper.media-wrapper--16-9
-          video(loop)
+          video
             source(src='/video/sevidov.mp4' type="video/mp4")
       
       .section-video__link(data-nav-color="black")
@@ -65,6 +65,39 @@ block content
         // navigator
         .image-gallery__prev
         .image-gallery__next
+
+    // section
+    .section-extra(data-nav-color="black")
+      .container
+        h3.h3-title Из невошедшего
+      
+      .container
+        .section-extra__slider.swiper-container(js-swiper-extra data-nav-color="white")
+          .swiper-wrapper
+            // slide
+            .section-extra__slide
+              .video-player(js-video-player data-scroll-to-viewport="false")
+                .video-player__placeholder
+                  img(src="img/photo.jpg")
+                .media-wrapper.media-wrapper--square
+                  video
+                    source(src='/video/sevidov.mp4' type="video/mp4")
+            // slide
+            .section-extra__slide
+              .video-player(js-video-player data-scroll-to-viewport="false")
+                .video-player__placeholder
+                  img(src="img/photo.jpg")
+                .media-wrapper.media-wrapper--square
+                  video
+                    source(src='/video/sevidov.mp4' type="video/mp4")
+            // slide
+            .section-extra__slide
+              .video-player(js-video-player data-scroll-to-viewport="false")
+                .video-player__placeholder
+                  img(src="img/photo.jpg")
+                .media-wrapper.media-wrapper--square
+                  video
+                    source(src='/video/sevidov.mp4' type="video/mp4")
 
     // section
     .section-next(data-nav-color="black")

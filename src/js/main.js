@@ -121,7 +121,7 @@ $(document).ready(function(){
     // Cache selectors
     var sections = $('[data-nav-color]');
     var headerHeight = $('.header').height();
-    var headerDiffInPaddings = 25
+    var headerDiffInPaddings = 0 // depreciated
     // Collect arr of past scroll elements
     var cur = sections.map(function(){
       var elTop = $(this).offset().top - parseInt($(this).css('marginTop'))
@@ -251,6 +251,10 @@ $(document).ready(function(){
       function playVideo(){
         video.play();
 
+        if ( $this.data('scroll-to-viewport') === false ){
+          return
+        }
+
         // scroll to the viewport
         scrollDocumentTo(scrollTarget, function(){
           // pause on exiting viewport
@@ -303,7 +307,6 @@ $(document).ready(function(){
         prevEl: '.image-gallery__prev',
       },
       speed: 500,
-
     });
 
     gallerySwiper.on('slideChange', function(){
@@ -313,6 +316,29 @@ $(document).ready(function(){
         $('[js-swiper-gallery]').removeClass('is-last-active');
       }
     })
+
+    // extra swiper
+    var casesSwiper = new Swiper('[js-swiper-extra]', {
+      slideClass: "section-extra__slide",
+      slidesPerView: 'auto',
+      spaceBetween: 75,
+      slidesOffsetBefore: 0,
+      slidesOffsetAfter: 0,
+      freeMode: true,
+      // grabCursor: true,
+      resistanceRatio: 0.85,
+      freeModeMomentumRatio: 0.7,
+      freeModeMomentumVelocityRatio: 0.8,
+      freeModeMomentumBounceRatio: 0.6,
+      freeModeSticky: true,
+      breakpoints: {
+        1440: {
+          slidesOffsetBefore: 0,
+          spaceBetween: 45
+        },
+      }
+    });
+
 
     // https://codepen.io/dangodev/pen/bpjrRg
 

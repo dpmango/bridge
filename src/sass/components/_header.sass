@@ -13,7 +13,7 @@
   &__wrapper
     display: flex
     align-items: center
-    padding: 55px 0 30px
+    padding: 55px 0
 
   &__logo
     flex: 0 0 auto
@@ -63,6 +63,19 @@
   //       pointer-events: none
   //       transform: translate(0,-10px)
 
+
++r($hd)
+  .header
+    &__wrapper
+      padding: 35px 0
+    &__logo
+      font-size: 25px
+    &__menu
+      font-size: 17px
+      li
+        margin-right: 30px
+        &:last-child
+          margin-right: 0
 
 +r($desktop)
   .header
