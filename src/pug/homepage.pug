@@ -5,79 +5,74 @@ bodyClass: homepage
 extends shared/_layout
 block content
   
+  - 
+    var homeSlides = [
+      {
+        id: 1,
+        video: "/video/macallan.mp4", 
+        image: "slide",
+        name: "The Macallan",
+        title: "Изнанка &#10; глянцевых &#10; фото-сессий",
+        url: "project.html",
+      },
+      {
+        id: 2,
+        video: "/video/jim-beam.mp4", 
+        image: "slide",
+        name: "JIM BEAM",
+        title: "Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS",
+        url: "project.html",
+      },
+      {
+        id: 3,
+        video: "/video/bigbon.mp4", 
+        image: "slide",
+        name: "Big Bon",
+        title: "Ты решаешь, &#10; как ты отдыхаешь",
+        url: "project.html",
+      },
+      {
+        id: 4,
+        video: "/video/tele2.mp4", 
+        image: "slide",
+        name: "Tele 2",
+        title: "Косплей &#10; живет в каждом",
+        url: "project.html",
+      },
+      {
+        id: 5,
+        video: "/video/sevidov.mp4", 
+        image: "slide",
+        name: "The Macallan",
+        title: "Премьера песни &#10; Антона Севидова &#10; Avoid",
+        url: "project.html",
+      },
+      {
+        id: 6,
+        video: "/video/flash-up.mp4", 
+        image: "slide",
+        name: "Flash Up",
+        title: "В плавках &#10; с горы? &#10; Легко!",
+        url: "project.html",
+      }
+    ]
+    
   // HOME
   .home
     .home__slider
       .home__slidable(js-home-slider)
-        // slide
-        .home__slide.hero
-          .hero__background
-            video(autoplay muted loop)
-              source(src='/video/macallan.mp4' type="video/mp4")
-            // fallback image  
-            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
-          .hero__contents
-            .hero__name The Macallan
-            a(href="project.html").hero__title Изнанка &#10; глянцевых &#10; фото-сессий
-            a(href="project.html").hero__more.link-border о проекте
-      
-        // slide
-        .home__slide.hero
-          .hero__background
-            video(autoplay muted loop)
-              source(src='/video/jim-beam.mp4' type="video/mp4")
-            // fallback image  
-            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
-          .hero__contents
-            .hero__name JIM BEAM
-            a(href="project.html").hero__title Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
-            a(href="project.html").hero__more.link-border о проекте
-      
-        // slide
-        .home__slide.hero
-          .hero__background
-            video(autoplay muted loop)
-              source(src='/video/bigbon.mp4' type="video/mp4")
-            // fallback image  
-            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
-          .hero__contents
-            .hero__name Big Bon
-            a(href="project.html").hero__title Ты решаешь, &#10; как ты отдыхаешь
-            a(href="project.html").hero__more.link-border о проекте
-      
-        // slide
-        .home__slide.hero
-          .hero__background
-            video(autoplay muted loop)
-              source(src='/video/bigbon.mp4' type="video/mp4")
-            // fallback image  
-            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
-          .hero__contents
-            .hero__name Tele 2
-            a(href="project.html").hero__title Косплей &#10; живет в каждом
-            a(href="project.html").hero__more.link-border о проекте
-        
-        // slide
-        .home__slide.hero
-          .hero__background
-            video(autoplay muted loop)
-              source(src='/video/sevidov.mp4' type="video/mp4")
-            // fallback image  
-            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
-          .hero__contents
-            .hero__name The Macallan
-            a(href="project.html").hero__title Премьера песни &#10; Антона Севидова &#10; Avoid
-            a(href="project.html").hero__more.link-border о проекте
-        
-        // slide
-        .home__slide.hero
-          .hero__background
-            video(autoplay muted loop)
-              source(src='/video/flash-up.mp4' type="video/mp4")
-            // fallback image  
-            img(src="img/slide.png" srcset="img/slide@2x.png 2x")
-          .hero__contents
-            .hero__name Flash Up
-            a(href="project.html").hero__title В плавках &#10; с горы? &#10; Легко!
-            a(href="project.html").hero__more.link-border о проекте
+        each slide in homeSlides
+          // slide
+          .home__slide.hero
+            .hero__background
+              video(autoplay muted loop)
+                source(src=slide.video type="video/mp4")
+              // fallback image  
+              img(src='img/' + slide.image + '.png' srcset='img/' + slide.image + '@2x.png 2x')
+              
+            .hero__contents
+              .container
+                .hero__name= slide.name
+                a(href=slide.url js-wrap-spans).hero__title!= slide.title
+                a(href=slide.url).hero__more.link-border о проекте
       

@@ -199,7 +199,7 @@ $(document).ready(function(){
   // WRAP LONG TEXT TO EACH LINE SPAN
   //////////
   function initWrapText(resized){
-    $('.hero__title').each(function(i,title){
+    $('[js-wrap-spans]').each(function(i,title){
       $(title).lines(resized)
     })
   }

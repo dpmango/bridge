@@ -12,10 +12,11 @@ block content
           source(src='/video/jim-beam.mp4' type="video/mp4")
 
       .hero__contents
-        .hero__name Внутреняя
-        .hero__title Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
-        a(href="#").hero__more.link-border о проекте
-      
+        .container
+          .hero__name Внутреняя
+          .hero__title(js-wrap-spans) Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
+          a(href="#").hero__more.link-border о проекте
+        
     .hero-scroll(data-nav-color="black")
       .hero-scroll__button(js-scroll-to data-target="section-name")
         +icon('ico-scroll-arrow-down')
@@ -69,35 +70,35 @@ block content
     // section
     .section-extra(data-nav-color="black")
       .container
-        h3.h3-title Из невошедшего
+        h2.h2-title Из невошедшего
       
       .container
         .section-extra__slider.swiper-container(js-swiper-extra data-nav-color="white")
           .swiper-wrapper
-            // slide
-            .section-extra__slide
-              .video-player(js-video-player data-scroll-to-viewport="false")
-                .video-player__placeholder
-                  img(src="img/photo.jpg")
-                .media-wrapper.media-wrapper--square
-                  video
-                    source(src='/video/sevidov.mp4' type="video/mp4")
-            // slide
-            .section-extra__slide
-              .video-player(js-video-player data-scroll-to-viewport="false")
-                .video-player__placeholder
-                  img(src="img/photo.jpg")
-                .media-wrapper.media-wrapper--square
-                  video
-                    source(src='/video/sevidov.mp4' type="video/mp4")
-            // slide
-            .section-extra__slide
-              .video-player(js-video-player data-scroll-to-viewport="false")
-                .video-player__placeholder
-                  img(src="img/photo.jpg")
-                .media-wrapper.media-wrapper--square
-                  video
-                    source(src='/video/sevidov.mp4' type="video/mp4")
+            -
+              var extraSlides = [
+                {
+                  photo: "img/photo.jpg",
+                  video: "/video/sevidov.mp4"
+                },
+                {
+                  photo: "img/photo.jpg",
+                  video: "/video/sevidov.mp4"
+                },
+                {
+                  photo: "img/photo.jpg",
+                  video: "/video/sevidov.mp4"
+                }
+              ]
+            each slide in extraSlides
+              // slide
+              .section-extra__slide
+                .video-player(js-video-player data-scroll-to-viewport="false")
+                  .video-player__placeholder
+                    img(src=slide.photo)
+                  .media-wrapper.media-wrapper--square
+                    video
+                      source(src=slide.video type="video/mp4")
 
     // section
     .section-next(data-nav-color="black")
