@@ -8,7 +8,7 @@ PageList:
 - file: cases.html
   ready: 50
 - file: contact.html
-  ready: 30
+  ready: 50
 - file: about.html
   ready: 0
 - file: bonus.html

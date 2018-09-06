@@ -20,8 +20,9 @@ block content
     // section
     .s-info(data-nav-color="black")
       .s-info__wrapper
-        .s-info__text
-          p BRIDGE was founded in 2015 exclusively for Mercedes-Benz. From 2018 on, a new agency will start for the sweets brand, Katjes. antoni’s main idea is focus. We believe that concentrating on one client delivers the best results. Want to know more? We look forward to hearing from you.
+        .s-info__content
+          .s-info__text
+            p BRIDGE was founded in 2015 exclusively for Mercedes-Benz. From 2018 on, a new agency will start for the sweets brand, Katjes. antoni’s main idea is focus. We believe that concentrating on one client delivers the best results. Want to know more? We look forward to hearing from you.
         .s-info__media
           .reveal(
             js-reveal 
@@ -31,12 +32,21 @@ block content
     
     // contact
     .contact-office(data-nav-color="black")
-    .reveal(
-      js-reveal 
-      data-type="halflyEnterViewport"
-      data-anim="ltr")
-      img(src='img/contactOfficeMoscow.jpg' srcset='img/contactOfficeMoscow@2x.jpg 2x')
-
+      .contact-office__wrapper
+        .contact-office__media
+          .reveal(
+            js-reveal 
+            data-type="halflyEnterViewport"
+            data-anim="ltr")
+            img(src='img/contactOfficeMoscow.jpg' srcset='img/contactOfficeMoscow@2x.jpg 2x')
+        .contact-office__content
+          .contact-office__title Москва
+          .contact-office__card
+            .contact-office__adress Москва, ул. Годовикова, д. 2 стр. 10
+            .contact-office__credentials
+              span тел.: <a href="tel:+74956516155" class="link-border">+7 (495) 651 61 55</a>
+              span e-mail: <a href="mailto:info@bridgemarketing.ru" class="link-border">info@bridgemarketing.ru </a>
+            a(href="#" target="_blank").link-border.contact-office__onmap На карте
 
     // Footer
     .footer
