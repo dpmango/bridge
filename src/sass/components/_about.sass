@@ -16,11 +16,46 @@
   &__grid
     position: relative
     z-index: 2
-    display: flex
-    min-height: 2000px
-
-  &__image
-    width: 200px
     padding-top: 80vh
-    img
-      max-width: 100%
+
+  &__col
+    width: 49.23875%
+
+  &__media
+    position: relative
+    img, video
+      width: 100%
+
+  &__row
+    display: flex
+    justify-content: space-between
+    &:nth-child(2n + 1)
+      margin-bottom: 11.1678%
+      .about__col:nth-child(1)
+        .about__media
+          width: 48.45395%
+        .about__media:nth-child(1)
+          margin-left: 25.77302%
+          margin-top: -3.04502%
+          margin-bottom: 15.97861%
+        .about__media:nth-child(3)
+          margin: 15.97861% 12.88651% 0 25.77302%
+    &:nth-child(2n)
+      margin-bottom: 6.34516%
+      .about__col:nth-child(1)
+        order: 2
+        width: 42.89359%
+        .about__media
+          width: 55.62164%
+        .about__media:nth-child(1)
+          margin-left: 14.79279%
+          margin-top: -11.24328%
+          margin-bottom: 26.03607%
+        .about__media:nth-child(2)
+          margin-left: 44.37836%
+        .about__media:nth-child(3)
+          margin: 18.34229% 14.79279% 0 14.79279%
+      .about__col:nth-child(2)
+        width: 49.23875%
+        margin-left: 12.88651%
+        order: 1

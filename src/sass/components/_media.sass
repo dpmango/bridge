@@ -6,10 +6,27 @@
   flex-direction: column
   z-index: 1
   width: 100%
+  // ! Possible conflicts ?
+  font-size: 0
   &--16-9
     padding-bottom: 56%
   &--square
     padding-bottom: 90%
+  &--1-1
+    padding-bottom: 100%
+  &--abs
+    overflow: hidden
+    img
+      width: 100%
+      top: 0
+      left: 0
+      position: absolute
+      display: block
+    video
+      height: 100%
+      left: 50%
+      position: absolute
+      transform: translateX(-50%)
 
 // video player
 .video-player

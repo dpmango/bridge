@@ -11,9 +11,61 @@ block content
       .about__name Мы
       
     .about__grid#scroller-js(js-auto-scroll)
-      .about__image
-        img(src='/img/photo.jpg')
-      .about__image
-        img(src='/img/photo.jpg')
-      .about__image
-        img(src='/img/photo.jpg')
+      .container
+        // row (welcome image with space holder)
+        .about__row
+          .about__col
+            // space holder
+            
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_3.jpg' srcset="img/gallery/gal_3@2x.jpg 2x")
+        
+        // next row (2 small right, one left)
+        .about__row
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_1.jpg' srcset="img/gallery/gal_1@2x.jpg 2x")
+            .about__media
+              img(src='img/gallery/gal_2.jpg' srcset="img/gallery/gal_2@2x.jpg 2x")
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_4.jpg' srcset="img/gallery/gal_4@2x.jpg 2x")
+        
+        // next row (2 small left, one right)
+        .about__row
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_1.jpg' srcset="img/gallery/gal_1@2x.jpg 2x")
+            .about__media
+              img(src='img/gallery/gal_2.jpg' srcset="img/gallery/gal_2@2x.jpg 2x")
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_4.jpg' srcset="img/gallery/gal_4@2x.jpg 2x")
+        
+        // copy prev 2
+        // next row (2 small right, one left)
+        .about__row
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_1.jpg' srcset="img/gallery/gal_1@2x.jpg 2x")
+            .about__media
+              img(src='img/gallery/gal_2.jpg' srcset="img/gallery/gal_2@2x.jpg 2x")
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_4.jpg' srcset="img/gallery/gal_4@2x.jpg 2x")
+        
+        // next row (2 small left, one right)
+        .about__row
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_1.jpg' srcset="img/gallery/gal_1@2x.jpg 2x")
+            .about__media
+              img(src='img/gallery/gal_2.jpg' srcset="img/gallery/gal_2@2x.jpg 2x")
+          .about__col
+            .about__media
+              img(src='img/gallery/gal_4.jpg' srcset="img/gallery/gal_4@2x.jpg 2x")
+      
+      
+      // container sibling level inside scroller
+      include components/_footer
