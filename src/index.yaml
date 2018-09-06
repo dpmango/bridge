@@ -10,6 +10,6 @@ PageList:
 - file: contact.html
   ready: 50
 - file: about.html
-  ready: 0
+  ready: 30
 - file: bonus.html
   ready: 0

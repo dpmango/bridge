@@ -69,6 +69,16 @@
         transform: translate(0,-10px)
 
 
+.header-always-visible
+  .header.is-scrolling-down
+    .header
+      &__logo, &__menu, &__hamburger
+        // just rewrites for now
+        // todo - move to JS detectors
+        opacity: 1
+        pointer-events: all
+        transform: translate(0,0px)
+
 +r($hd)
   .header
     &__wrapper

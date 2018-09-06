@@ -1,8 +1,19 @@
 ---
 title: Мы
+bodyClass: header-always-visible
 ---
 extends shared/_layout
 block content
   
   // ABOUT
-  .about
+  .about(data-nav-color="black")
+    .about__fixed
+      .about__name Мы
+      
+    .about__grid#scroller-js(js-auto-scroll)
+      .about__image
+        img(src='/img/photo.jpg')
+      .about__image
+        img(src='/img/photo.jpg')
+      .about__image
+        img(src='/img/photo.jpg')

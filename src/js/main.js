@@ -480,6 +480,17 @@ $(document).ready(function(){
       return false
     })
 
+
+
+    // AUTO SCROLL FOR THE ABOUT PAGE
+    if ( $('[js-auto-scroll]').length > 0 ) {
+      var scrollInterval = setInterval(function(){
+        window.scrollBy(0, 1);
+      }, 60);
+
+      // TODO - when to clear ?
+    }
+
   }
 
   ////////////
