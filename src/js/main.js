@@ -494,23 +494,6 @@ $(document).ready(function(){
         return
       }
 
-      // otherwise scrollMonitor
-      // var elWatcher = scrollMonitor.create( $(el) );
-      //
-      // if ( type === "enterViewport" ){
-      //   elWatcher.enterViewport(throttle(function() {
-      //     $(el).addClass('is-animated')
-      //   }, 100, {
-      //     'leading': true
-      //   }));
-      // } else if ( type === "fullyEnterViewport" ) {
-      //   elWatcher.fullyEnterViewport(throttle(function() {
-      //     $(el).addClass('is-animated')
-      //   }, 100, {
-      //     'leading': true
-      //   }));
-      // }
-
     });
   }
 
