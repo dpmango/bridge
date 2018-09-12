@@ -8,6 +8,7 @@ $(document).ready(function(){
   var _document = $(document);
   var easingSwing = [.02, .01, .47, 1]; // default jQuery easing for anime.js
   var moveEasing = [0.77, 0, 0.175, 1];
+  var preloaderActive = true
 
   ////////////
   // READY - triggered when PJAX DONE
@@ -73,7 +74,8 @@ $(document).ready(function(){
   // PRELOADER FUNCTION
   function initPreloader(){
     setTimeout(function(){
-      $('.preloader').addClass('is-loaded')
+      $('.preloader').addClass('is-loaded');
+      preloaderActive = false
     }, 1500)
   }
 
@@ -278,6 +280,23 @@ $(document).ready(function(){
       $this.addClass('is-playing');
 
       return false
+    })
+
+
+  // VIDEO HOVER
+  _document
+    .on('mouseover', '[js-video-hover]', function(){
+      var $this = $(this);
+      var video = $this.find('video').get(0);
+
+      video.play()
+    })
+    .on('mouseout', '[js-video-hover]', function(){
+      var $this = $(this);
+      var video = $this.find('video').get(0);
+
+      video.currentTime = 0;
+      video.pause()
     })
 
 
@@ -500,6 +519,16 @@ $(document).ready(function(){
     $('[js-reveal]').each(function(i, el){
 
       var type = $(el).data('type') || "enterViewport"
+
+      if ( type === "onload" ){
+        var interval = setInterval(function(){
+          if (!preloaderActive){
+            $(el).addClass('is-animated');
+            clearInterval(interval)
+          }
+        }, 100)
+        return
+      }
 
       if ( type === "halflyEnterViewport"){
         var scrollListener = debounce(function(){

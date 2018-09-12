@@ -10,6 +10,9 @@
     z-index: 2
     pointer-events: none
     transition: transform .8s cubic-bezier(0.9, 0, 0.1, 1)
+  &--black
+    &::after
+      background: #000
 
   &.is-animated
     &[data-anim="ltr"]
