@@ -4,7 +4,7 @@ header.header(js-header-scroll)
     .header__wrapper
       a(href="homepage.html").header__logo
         +icon('ico-logo')
-      ul.header__menu(js-teleport data-teleport-to="mobile-navi-menu" data-teleport-condition="<768")
+      ul.header__menu
         li 
           a.link-border(href="cases.html") Проекты
         li
@@ -26,9 +26,16 @@ header.header(js-header-scroll)
 .mobile-navi
   .container
     .mobile-navi__wrapper
-      ul.mobile-navi__menu(data-teleport-target="mobile-navi-menu")
-        // contents to be teleported
-        
+      ul.mobile-navi__menu
+        li 
+          a.link-border(href="cases.html") Проекты
+        li
+          a.link-border(href="contact.html") Контакты
+        li
+          a.link-border(href="about.html") Мы
+        li
+          a.link-border(href="bonus.html") Бонус
+          
       .mobile-navi__socials.socials
         .socials__title Мы в соцсетях
         .socials__list

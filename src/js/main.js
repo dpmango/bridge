@@ -6,7 +6,7 @@ $(document).ready(function(){
 
   var _window = $(window);
   var _document = $(document);
-  var easingSwing = [.02, .01, .47, 1]; // default jQuery easing for anime.js
+  var easingSwing = [.02, .01, .47, 1]; // default jQuery easing
   var moveEasing = [0.77, 0, 0.175, 1];
   var preloaderActive = true
 
@@ -33,20 +33,24 @@ $(document).ready(function(){
   ////////////
   // READY - triggered when PJAX DONE
   ////////////
-  function pageReady(){
-    legacySupport();
-    initPreloader();
+
+  // Functions that should be called once only
+  legacySupport();
+  initPreloader();
+  _window.on('resize', debounce(function(){initWrapText(true)}, 200))
+
+  // functions called separatelly on transitionCompleted
+  initAutoScroll();
+
+  // onNewPageReady trigger
+  function pageReady(fromPjax){
+    initHeaderScroll();
     updateHeaderActiveClass();
     setBodyClass();
     initWrapText();
-    _window.on('resize', debounce(function(){initWrapText(true)}, 200))
-    initHeaderScroll();
-
     initSliders();
-    initCustomScroll();
-    initScrollMonitor();
-    initTeleport();
-    _window.on('resize', debounce(setBreakpoint, 200))
+    initScrollMonitor(fromPjax);
+    closeMobileMenu();
   }
 
   // this is a master function which should have all functionality
@@ -101,14 +105,8 @@ $(document).ready(function(){
 
   // SCROLL DOCUMENT
   function scrollDocumentTo(to, cb){
-    // var $scrollable = $('[js-page-scroll]');
-    //
-    // $scrollable.css({
-    //   'transform': 'translate3d(0,-'+to+'px,0)'
-    // }, function(){
-    //
-    // })
-
+    // should still trigger custom scroll functions
+    // TODO - check
     var scrollAnime = anime({
       targets: "html, body",
       scrollTop: to,
@@ -191,8 +189,9 @@ $(document).ready(function(){
   // SET ACTIVE CLASS IN HEADER
   // * could be removed in production and server side rendering when header is inside barba-container
   function updateHeaderActiveClass(){
-    $('.header__menu li').each(function(i,val){
+    _document.find('.header__menu li').each(function(i,val){
       if ( $(val).find('a').attr('href') == window.location.pathname.split('/').pop() ){
+        console.log('val is active', $(val))
         $(val).addClass('is-active');
       } else {
         $(val).removeClass('is-active')
@@ -488,41 +487,7 @@ $(document).ready(function(){
   ////////////
 
   var scrollInterval // store timeout session for autoscroll
-
-  function initCustomScroll(){
-
-    var $scrollable = $('[js-page-scroll]');
-    var calcTransform = 0
-    var scrollDistance = 0
-    var minScrollDistance = 0
-    var maxScrollDistane = $scrollable.height() - _window.height();
-
-    $scrollable.on('mousewheel DOMMouseScroll', function(e){
-      var delta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
-
-      scrollDistance += e.originalEvent.deltaY * 0.8 // slow down by 20%
-      if ( scrollDistance < minScrollDistance ){ scrollDistance = minScrollDistance }
-      if ( scrollDistance > maxScrollDistane ){ scrollDistance = maxScrollDistane }
-
-      // scrollDocumentTo(scrollDistance)
-
-      // var page = document.querySelector('[js-page-scroll]')
-      // TweenLite.to(page, 1, {
-      //   // y: scrollDistance
-      //   left: 200
-      // });
-
-      // anime({
-      //   targets: $scrollable.get(0),
-      //   translateY: '-' + scrollDistance,
-      //   easing: 'easeInOutCubic',
-      //   duration: 10
-      // });
-
-      return false
-    })
-
-
+  function initAutoScroll(){
 
     // AUTO SCROLL FOR THE ABOUT PAGE
     if ( $('[js-auto-scroll]').length > 0 ) {
@@ -554,7 +519,6 @@ $(document).ready(function(){
       var height = scroller.target.clientHeight;
       body.style.height = height + "px";
 
-      console.log(scroller.target, scroller.target.clientHeight)
       scroller.resizeRequest = 0;
     }
 
@@ -586,7 +550,6 @@ $(document).ready(function(){
   }
 
   function onResizeScroller() {
-    console.log('on resize trigger', requestId)
     scroller.resizeRequest++;
     if (!requestId) {
       requestId = requestAnimationFrame(updateScroller);
@@ -598,15 +561,23 @@ $(document).ready(function(){
   ////////////
   // REVEAL FUNCTIONS
   ////////////
-  function initScrollMonitor(){
+  function initScrollMonitor(fromPjax){
     $('[js-reveal]').each(function(i, el){
       var type = $(el).data('type') || "enterViewport"
 
       if ( type === "onload" ){
         var interval = setInterval(function(){
           if (!preloaderActive){
-            $(el).addClass('is-animated');
-            clearInterval(interval)
+            if ( fromPjax ){
+              // wait till transition overlay is fullyanimated
+              setTimeout(function(){
+                $(el).addClass('is-animated');
+                clearInterval(interval)
+              }, 600)
+            } else {
+              $(el).addClass('is-animated');
+              clearInterval(interval)
+            }
           }
         }, 100)
         return
@@ -631,45 +602,6 @@ $(document).ready(function(){
     });
   }
 
-  ////////////
-  // TELEPORT PLUGIN
-  ////////////
-  function initTeleport(){
-    $('[js-teleport]').each(function (i, val) {
-      var self = $(val)
-      var objHtml = $(val).html();
-      var target = $('[data-teleport-target=' + $(val).data('teleport-to') + ']');
-      var conditionMedia = $(val).data('teleport-condition').substring(1);
-      var conditionPosition = $(val).data('teleport-condition').substring(0, 1);
-
-      if (target && objHtml && conditionPosition) {
-
-        function teleport() {
-          var condition;
-
-          if (conditionPosition === "<") {
-            condition = _window.width() < conditionMedia;
-          } else if (conditionPosition === ">") {
-            condition = _window.width() > conditionMedia;
-          }
-
-          if (condition) {
-            target.html(objHtml)
-            self.html('')
-          } else {
-            self.html(objHtml)
-            target.html("")
-          }
-        }
-
-        teleport();
-        _window.on('resize', debounce(teleport, 100));
-
-
-      }
-    })
-  }
-
 
   //////////
   // BARBA PJAX
@@ -677,7 +609,7 @@ $(document).ready(function(){
 
   Barba.Pjax.Dom.containerClass = "page";
 
-  var FadeTransition = Barba.BaseTransition.extend({
+  var OverlayTransition = Barba.BaseTransition.extend({
     start: function() {
       Promise
         .all([this.newContainerLoading, this.fadeOut()])
@@ -687,13 +619,18 @@ $(document).ready(function(){
     fadeOut: function() {
       var deferred = Barba.Utils.deferred();
 
-      anime({
-        targets: this.oldContainer,
-        opacity : .5,
-        easing: easingSwing, // swing
-        duration: 300,
-        complete: function(anim){
-          deferred.resolve();
+      // store overlay globally to access in fadein
+      this.$overlay = $('<div class="js-transition-overlay"></div>')
+      this.$overlay.insertAfter(".header");
+      $('.header').removeClass('is-dark').removeClass('is-scrolling-down')
+
+      TweenLite.fromTo(this.$overlay, .6, {
+        x: "0%"
+      }, {
+        x: "100%",
+        ease: Quart.easeIn,
+        onComplete: function() {
+          deferred.resolve()
         }
       })
 
@@ -701,15 +638,14 @@ $(document).ready(function(){
     },
 
     fadeIn: function() {
-      var _this = this;
+      var _this = this; // copy to acces inside animation callbacks
       var $el = $(this.newContainer);
 
       $(this.oldContainer).hide();
 
       $el.css({
-        visibility : 'visible',
-        opacity : .5
-      });
+        'visibility': 'visible'
+      })
 
       anime({
         targets: "html, body",
@@ -718,18 +654,24 @@ $(document).ready(function(){
         duration: 150
       });
 
-      anime({
-        targets: this.newContainer,
-        opacity: 1,
-        easing: easingSwing, // swing
-        duration: 300,
-        complete: function(anim) {
+      TweenLite.fromTo(this.$overlay, 1, {
+        x: "100%",
+        overwrite: "all"
+      }, {
+        x: "200%",
+        ease: Expo.easeOut,
+        delay: .2,
+        onComplete: function(){
+          _this.$overlay.remove()
           triggerBody()
           _this.done();
         }
-      });
+      })
+
     }
   });
+
+
 
   // project transition
   var ProjectTransition = Barba.BaseTransition.extend({
@@ -820,7 +762,7 @@ $(document).ready(function(){
   // transition logic
   var lastClickEl;
   Barba.Pjax.getTransition = function() {
-    var transitionObj = FadeTransition; // default transition
+    var transitionObj = OverlayTransition; // default transition
 
     // route specific transitions
     if ( $(lastClickEl).attr('href') === 'project.html' ){
@@ -851,20 +793,13 @@ $(document).ready(function(){
 
   // The new container has been loaded and injected in the wrapper.
 
-  // Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container, newPageRawHTML) {
-  //   pageReady();
-  //   closeMobileMenu();
-  //
-  //   // scroller update on pjax
-  //   var newScroller = document.querySelectorAll("#scroller-js")[1];
-  //   scroller.target = newScroller;
-  //   onResizeScroller()
-  // });
+  Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container, newPageRawHTML) {
+    pageReady(true);
+  });
 
   // The transition has just finished and the old Container has been removed from the DOM.
   Barba.Dispatcher.on('transitionCompleted', function(currentStatus, oldStatus) {
-    pageReady();
-    closeMobileMenu();
+    initAutoScroll()
 
     // scroller update on pjax
     var newScroller = document.querySelector("#scroller-js");
@@ -877,27 +812,6 @@ $(document).ready(function(){
     // _window.scrollTop(0);
     $(window).scroll();
     $(window).resize();
-  }
-
-  //////////
-  // DEVELOPMENT HELPER
-  //////////
-  function setBreakpoint(){
-    var wHost = window.location.host.toLowerCase()
-    var displayCondition = wHost.indexOf("localhost") >= 0 || wHost.indexOf("surge") >= 0
-    if (displayCondition){
-      var wWidth = _window.width();
-
-      var content = "<div class='dev-bp-debug'>"+wWidth+"</div>";
-
-      $('.page').append(content);
-      setTimeout(function(){
-        $('.dev-bp-debug').fadeOut();
-      },1000);
-      setTimeout(function(){
-        $('.dev-bp-debug').remove();
-      },1500)
-    }
   }
 
 });

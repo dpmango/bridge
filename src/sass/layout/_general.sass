@@ -80,6 +80,22 @@ body
     padding-left: 20px
     padding-right: 20px
 
+
+// page transition overlay
+.js-transition-overlay
+  position: fixed
+  top: 0
+  left: -100%
+  bottom: 0
+  z-index: 7
+  background: #000
+  width: 100vw
+  // animation to be handled with TweenLite
+  // transform: translate3d(0,0,0)
+  // transition: transform .8s $easing
+  // &.is-animating
+  //   transform: translate3d(200%,0,0)
+
 // REMOVE FOR PRODUCTION !
 .dev-bp-debug
   background: black
