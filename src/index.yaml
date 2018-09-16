@@ -2,14 +2,14 @@ ProjectTitle: Bridge
 
 PageList:
 - file: homepage.html
-  ready: 50
+  ready: 80
 - file: project.html
-  ready: 50
+  ready: 80
 - file: cases.html
-  ready: 50
+  ready: 80
 - file: contact.html
-  ready: 50
+  ready: 80
 - file: about.html
-  ready: 50
+  ready: 80
 - file: bonus.html
   ready: 0

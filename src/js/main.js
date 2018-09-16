@@ -10,6 +10,26 @@ $(document).ready(function(){
   var moveEasing = [0.77, 0, 0.175, 1];
   var preloaderActive = true
 
+  // globals for scroll
+  var html = document.documentElement;
+  var body = document.body;
+
+  var scroller = {
+    target: document.querySelector("#scroller-js"),
+    ease: 0.05, // <= scroll speed
+    endY: 0,
+    y: 0,
+    resizeRequest: 1,
+    scrollRequest: 0,
+  };
+
+  var requestId = null;
+
+  TweenLite.set(scroller.target, {
+    rotation: 0.01,
+    force3D: true
+  });
+
   ////////////
   // READY - triggered when PJAX DONE
   ////////////
@@ -464,8 +484,11 @@ $(document).ready(function(){
 
 
   ////////////
-  // TELEPORT PLUGIN
+  // CUSTOM SCROLL
   ////////////
+
+  var scrollInterval // store timeout session for autoscroll
+
   function initCustomScroll(){
 
     var $scrollable = $('[js-page-scroll]');
@@ -503,21 +526,80 @@ $(document).ready(function(){
 
     // AUTO SCROLL FOR THE ABOUT PAGE
     if ( $('[js-auto-scroll]').length > 0 ) {
-      var scrollInterval = setInterval(function(){
+      scrollInterval = setInterval(function(){
         window.scrollBy(0, 1);
       }, 60);
-
-      // TODO - when to clear ?
+    } else {
+      clearTimeout(scrollInterval)
     }
 
   }
+
+
+
+  window.addEventListener("load", onLoad);
+
+  function onLoad() {
+    updateScroller();
+    window.focus();
+    window.addEventListener("resize", onResizeScroller);
+    document.addEventListener("scroll", onScrollScroller);
+  }
+
+  function updateScroller() {
+
+    var resized = scroller.resizeRequest > 0;
+
+    if (resized) {
+      var height = scroller.target.clientHeight;
+      body.style.height = height + "px";
+
+      console.log(scroller.target, scroller.target.clientHeight)
+      scroller.resizeRequest = 0;
+    }
+
+    var scrollY = window.pageYOffset || html.scrollTop || body.scrollTop || 0;
+
+    scroller.endY = scrollY;
+    scroller.y += (scrollY - scroller.y) * scroller.ease;
+
+    if (Math.abs(scrollY - scroller.y) < 0.05 || resized) {
+      scroller.y = scrollY;
+      scroller.scrollRequest = 0;
+    }
+
+    TweenLite.set(scroller.target, {
+      y: -scroller.y
+    });
+
+    requestId = scroller.scrollRequest > 0 ? requestAnimationFrame(updateScroller) : null;
+  }
+
+  function onScrollScroller(e) {
+    // TODO
+    // decrease speed
+
+    scroller.scrollRequest++;
+    if (!requestId) {
+      requestId = requestAnimationFrame(updateScroller);
+    }
+  }
+
+  function onResizeScroller() {
+    console.log('on resize trigger', requestId)
+    scroller.resizeRequest++;
+    if (!requestId) {
+      requestId = requestAnimationFrame(updateScroller);
+    }
+  }
+
+
 
   ////////////
   // REVEAL FUNCTIONS
   ////////////
   function initScrollMonitor(){
     $('[js-reveal]').each(function(i, el){
-
       var type = $(el).data('type') || "enterViewport"
 
       if ( type === "onload" ){
@@ -766,9 +848,28 @@ $(document).ready(function(){
     lastClickEl = el; // save last click to detect transition type
   });
 
-  Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container, newPageRawHTML) {
+
+  // The new container has been loaded and injected in the wrapper.
+
+  // Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container, newPageRawHTML) {
+  //   pageReady();
+  //   closeMobileMenu();
+  //
+  //   // scroller update on pjax
+  //   var newScroller = document.querySelectorAll("#scroller-js")[1];
+  //   scroller.target = newScroller;
+  //   onResizeScroller()
+  // });
+
+  // The transition has just finished and the old Container has been removed from the DOM.
+  Barba.Dispatcher.on('transitionCompleted', function(currentStatus, oldStatus) {
     pageReady();
     closeMobileMenu();
+
+    // scroller update on pjax
+    var newScroller = document.querySelector("#scroller-js");
+    scroller.target = newScroller;
+    onResizeScroller()
   });
 
   // some plugins get bindings onNewPage only that way
@@ -825,79 +926,3 @@ $.fn.lines = function (resized) {
     $(this).html(buildStr)
   }
 };
-
-
-// SCROLL FUNCTION
-// https://codepen.io/osublake/pen/QqPqbN
-
-var html = document.documentElement;
-var body = document.body;
-
-var scroller = {
-  target: document.querySelector("#scroller-js"),
-  ease: 0.05, // <= scroll speed
-  endY: 0,
-  y: 0,
-  resizeRequest: 1,
-  scrollRequest: 0,
-};
-
-var requestId = null;
-
-TweenLite.set(scroller.target, {
-  rotation: 0.01,
-  force3D: true
-});
-
-window.addEventListener("load", onLoad);
-
-function onLoad() {
-  updateScroller();
-  window.focus();
-  window.addEventListener("resize", onResize);
-  document.addEventListener("scroll", onScroll);
-}
-
-function updateScroller() {
-
-  var resized = scroller.resizeRequest > 0;
-
-  if (resized) {
-    var height = scroller.target.clientHeight;
-    body.style.height = height + "px";
-    scroller.resizeRequest = 0;
-  }
-
-  var scrollY = window.pageYOffset || html.scrollTop || body.scrollTop || 0;
-
-  scroller.endY = scrollY;
-  scroller.y += (scrollY - scroller.y) * scroller.ease;
-
-  if (Math.abs(scrollY - scroller.y) < 0.05 || resized) {
-    scroller.y = scrollY;
-    scroller.scrollRequest = 0;
-  }
-
-  TweenLite.set(scroller.target, {
-    y: -scroller.y
-  });
-
-  requestId = scroller.scrollRequest > 0 ? requestAnimationFrame(updateScroller) : null;
-}
-
-function onScroll(e) {
-  // TODO
-  // decrease speed
-
-  scroller.scrollRequest++;
-  if (!requestId) {
-    requestId = requestAnimationFrame(updateScroller);
-  }
-}
-
-function onResize() {
-  scroller.resizeRequest++;
-  if (!requestId) {
-    requestId = requestAnimationFrame(updateScroller);
-  }
-}
