@@ -12,7 +12,7 @@ gulp.task('javascript:vendor', function() {
       path.resolve('bower_components', 'svg4everybody/dist/svg4everybody.min.js'),
       path.resolve('bower_components', 'viewport-units-buggyfill/viewport-units-buggyfill.js'),
       path.resolve('bower_components', 'swiper/dist/js/swiper.min.js'),
-      path.resolve('bower_components', 'barba.js/dist/barba.min.js'),
+      path.resolve('bower_components', 'barba.js/dist/barba.js'),
       // path.resolve('bower_components', 'jquery-lazy/jquery.lazy.min.js'),
       path.resolve('bower_components', 'animejs/anime.min.js'),
       path.resolve('node_modules', 'gsap/src/minified/TweenMax.min.js'),

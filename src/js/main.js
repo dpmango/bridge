@@ -78,12 +78,20 @@ $(document).ready(function(){
     .on('click', '[href="#"]', function(e) {
   		e.preventDefault();
   	})
+    .on('click', 'a[data-href]', function(){
+      Barba.Pjax.goTo($(this).data('href'))
+    })
     // dissallow same link hard refresh for pjax
     .on('click', 'a[href]', function(e){
-      if(e.currentTarget.href === window.location.href) {
-         e.preventDefault();
-         e.stopPropagation();
-       }
+      if ( Barba.Pjax.transitionProgress ){
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
+      if (e.currentTarget.href === window.location.href) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
     })
     .on('click', '[js-scroll-to]', function() { // section scroll
       var el = $('[data-scroll="'+$(this).data('target')+'"]')
@@ -187,11 +195,9 @@ $(document).ready(function(){
   }
 
   // SET ACTIVE CLASS IN HEADER
-  // * could be removed in production and server side rendering when header is inside barba-container
   function updateHeaderActiveClass(){
     _document.find('.header__menu li').each(function(i,val){
       if ( $(val).find('a').attr('href') == window.location.pathname.split('/').pop() ){
-        console.log('val is active', $(val))
         $(val).addClass('is-active');
       } else {
         $(val).removeClass('is-active')
