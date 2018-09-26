@@ -48,7 +48,7 @@ $(document).ready(function(){
     updateHeaderActiveClass();
     setBodyClass();
     initWrapText();
-    initSliders();
+    initSliders(fromPjax);
     initScrollMonitor(fromPjax);
     closeMobileMenu();
   }
@@ -87,7 +87,7 @@ $(document).ready(function(){
         e.preventDefault();
         e.stopPropagation();
       }
-      
+
       if (e.currentTarget.href === window.location.href) {
         e.preventDefault();
         e.stopPropagation();
@@ -329,7 +329,7 @@ $(document).ready(function(){
   // SLIDERS
   //////////
 
-  function initSliders(){
+  function initSliders(fromPjax){
 
     // cases slider
     var casesSwiper = new Swiper('[js-cases-swiper]', {
@@ -348,8 +348,13 @@ $(document).ready(function(){
       },
     });
 
+    var gallerySwiperInst = $('[js-swiper-gallery]')
+    if ( fromPjax ){
+      gallerySwiperInst = $('[js-swiper-gallery]')[1]
+    }
+
     // cases slider
-    var gallerySwiper = new Swiper('[js-swiper-gallery]', {
+    var gallerySwiper = new Swiper(gallerySwiperInst.get(0), {
       slideClass: "media-wrapper",
       slidesPerView: 'auto',
       freeMode: true,
@@ -374,9 +379,14 @@ $(document).ready(function(){
       }
     })
 
+    var casesSwiperInst = $('[js-swiper-extra]')
+    if ( fromPjax ){
+      casesSwiperInst = $('[js-swiper-extra]')[1]
+    }
+
     // extra swiper
-    var casesSwiper = new Swiper('[js-swiper-extra]', {
-      slideClass: "section-extra__slide",
+    var casesSwiper = new Swiper(casesSwiperInst.get(0), {
+      slideClass: "s-extra__slide",
       slidesPerView: 'auto',
       spaceBetween: 75,
       slidesOffsetBefore: 0,
@@ -696,10 +706,6 @@ $(document).ready(function(){
         .then(function(res){
           var $newContainer = $(res);
           $newContainer.css({
-            'position': 'absolute',
-            'top': 0,
-            'left': 0,
-            'right': 0,
             'visibility': 'visible',
             'opacity': 0
           });
@@ -720,10 +726,6 @@ $(document).ready(function(){
 
       var $newContainer = $(this.newContainer);
       $newContainer.css({
-        'position': 'absolute',
-        'top': 0,
-        'left': 0,
-        'right': 0,
         'visibility': 'visible',
         'opacity': 0
       });

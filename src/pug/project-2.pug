@@ -12,10 +12,11 @@ block content
           source(src='/video/jim-beam.mp4' type="video/mp4")
 
       .hero__contents
-        .hero__name Внутреняя
-        .hero__title(js-wrap-spans) Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
-        a(href="#").hero__more.link-border о проекте
-      
+        .container
+          .hero__name Внутреняя
+          .hero__title(js-wrap-spans) Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
+          a(href="#").hero__more.link-border о проекте
+        
     .hero-scroll(data-nav-color="black")
       .hero-scroll__button(js-scroll-to data-target="section-name")
         +icon('ico-scroll-arrow-down')
@@ -34,7 +35,7 @@ block content
           img(src="img/slide.png" srcset="img/slide@2x.png 2x")
         
         .media-wrapper.media-wrapper--16-9
-          video(loop)
+          video
             source(src='/video/sevidov.mp4' type="video/mp4")
       
       .s-video__link(data-nav-color="black")
@@ -67,9 +68,42 @@ block content
         .image-gallery__next
 
     // section
+    .s-extra(data-nav-color="black")
+      .container
+        h2.h2-title Из невошедшего
+      
+      .container
+        .s-extra__slider.swiper-container(js-swiper-extra data-nav-color="white")
+          .swiper-wrapper
+            -
+              var extraSlides = [
+                {
+                  photo: "img/photo.jpg",
+                  video: "/video/sevidov.mp4"
+                },
+                {
+                  photo: "img/photo.jpg",
+                  video: "/video/sevidov.mp4"
+                },
+                {
+                  photo: "img/photo.jpg",
+                  video: "/video/sevidov.mp4"
+                }
+              ]
+            each slide in extraSlides
+              // slide
+              .s-extra__slide
+                .video-player(js-video-player data-scroll-to-viewport="false")
+                  .video-player__placeholder
+                    img(src=slide.photo)
+                  .media-wrapper.media-wrapper--square
+                    video
+                      source(src=slide.video type="video/mp4")
+
+    // section
     .s-next(data-nav-color="black")
       .container
-        a(href="homepage.html").s-next__link
+        a(href="project.html").s-next__link
           .t-primary Следующий проект
           .h1-title.link-border Косплей живет в каждом
     
