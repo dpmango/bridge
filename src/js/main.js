@@ -354,58 +354,62 @@ $(document).ready(function(){
     }
 
     // cases slider
-    var gallerySwiper = new Swiper(gallerySwiperInst.get(0), {
-      slideClass: "media-wrapper",
-      slidesPerView: 'auto',
-      freeMode: true,
-      // grabCursor: true,
-      resistanceRatio: 0.85,
-      freeModeMomentumRatio: 0.7,
-      freeModeMomentumVelocityRatio: 0.8,
-      freeModeMomentumBounceRatio: 0.6,
-      freeModeSticky: true,
-      navigation: {
-        nextEl: '.image-gallery__next',
-        prevEl: '.image-gallery__prev',
-      },
-      speed: 500,
-    });
+    if ( gallerySwiperInst.length > 0 ){
+      var gallerySwiper = new Swiper(gallerySwiperInst.get(0), {
+        slideClass: "media-wrapper",
+        slidesPerView: 'auto',
+        freeMode: true,
+        // grabCursor: true,
+        resistanceRatio: 0.85,
+        freeModeMomentumRatio: 0.7,
+        freeModeMomentumVelocityRatio: 0.8,
+        freeModeMomentumBounceRatio: 0.6,
+        freeModeSticky: true,
+        navigation: {
+          nextEl: '.image-gallery__next',
+          prevEl: '.image-gallery__prev',
+        },
+        speed: 500,
+      });
 
-    gallerySwiper.on('slideChange', function(){
-      if ( gallerySwiper.isEnd ){
-        $('[js-swiper-gallery]').addClass('is-last-active');
-      } else {
-        $('[js-swiper-gallery]').removeClass('is-last-active');
-      }
-    })
+      gallerySwiper.on('slideChange', function(){
+        if ( gallerySwiper.isEnd ){
+          $('[js-swiper-gallery]').addClass('is-last-active');
+        } else {
+          $('[js-swiper-gallery]').removeClass('is-last-active');
+        }
+      })
+    }
 
     var casesSwiperInst = $('[js-swiper-extra]')
     if ( fromPjax ){
       casesSwiperInst = $('[js-swiper-extra]')[1]
     }
 
-    // extra swiper
-    var casesSwiper = new Swiper(casesSwiperInst.get(0), {
-      slideClass: "s-extra__slide",
-      slidesPerView: 'auto',
-      spaceBetween: 75,
-      slidesOffsetBefore: 0,
-      slidesOffsetAfter: 0,
-      freeMode: true,
-      // grabCursor: true,
-      resistanceRatio: 0.85,
-      freeModeMomentumRatio: 0.7,
-      freeModeMomentumVelocityRatio: 0.8,
-      freeModeMomentumBounceRatio: 0.6,
-      freeModeSticky: true,
-      breakpoints: {
-        1440: {
-          slidesOffsetBefore: 0,
-          spaceBetween: 45
-        },
-      }
-    });
+    if ( casesSwiperInst.length > 0 ){
+      // extra swiper
+      var casesSwiper = new Swiper(casesSwiperInst.get(0), {
+        slideClass: "s-extra__slide",
+        slidesPerView: 'auto',
+        spaceBetween: 75,
+        slidesOffsetBefore: 0,
+        slidesOffsetAfter: 0,
+        freeMode: true,
+        // grabCursor: true,
+        resistanceRatio: 0.85,
+        freeModeMomentumRatio: 0.7,
+        freeModeMomentumVelocityRatio: 0.8,
+        freeModeMomentumBounceRatio: 0.6,
+        freeModeSticky: true,
+        breakpoints: {
+          1440: {
+            slidesOffsetBefore: 0,
+            spaceBetween: 45
+          },
+        }
+      });
 
+    }
 
     // https://codepen.io/dangodev/pen/bpjrRg
 
@@ -600,16 +604,18 @@ $(document).ready(function(){
       }
 
       if ( type === "halflyEnterViewport"){
-        var scrollListener = debounce(function(){
-          var vScroll = _window.scrollTop();
+        var scrollListener = throttle(function(){
+          var vScrollBottom = _window.scrollTop() + _window.height();
           var elTop = $(el).offset().top
-          var triggerPoint = elTop - ( $(el).height() / 2)
+          var triggerPoint = elTop + ( $(el).height() / 2)
 
-          if ( vScroll > triggerPoint ){
+          console.log(vScrollBottom, triggerPoint, vScrollBottom > triggerPoint )
+
+          if ( vScrollBottom > triggerPoint ){
             $(el).addClass('is-animated');
             window.removeEventListener('scroll', scrollListener, false); // clear debounce func
           }
-        }, 200)
+        }, 100)
 
         window.addEventListener('scroll', scrollListener, false);
         return
@@ -824,6 +830,58 @@ $(document).ready(function(){
 
 });
 
+function wrapByLine(el, content){
+  var $cont = el
+
+  // $cont.text()
+  var text_arr = content.split(' ');
+
+  for (i = 0; i < text_arr.length; i++) {
+    text_arr[i] = '<span>' + text_arr[i] + ' </span>';
+  }
+
+  $cont.html(text_arr.join(''));
+
+  $wordSpans = $cont.find('span');
+
+  var lineArray = [],
+      lineIndex = 0,
+      lineStart = true
+
+  $wordSpans.each(function(idx) {
+    var pos = $(this).position();
+    var top = pos.top;
+
+    if (lineStart) {
+      lineArray[lineIndex] = [idx];
+      lineStart = false;
+    } else {
+      var $next = $(this).next();
+
+      if ($next.length) {
+        var isBreak = $next.html().indexOf("\n") !== -1
+        if ($next.position().top > top || isBreak) {
+          lineArray[lineIndex].push(idx);
+          lineIndex++;
+          lineStart = true
+        }
+      } else {
+        lineArray[lineIndex].push(idx);
+      }
+    }
+  });
+
+  for (i = 0; i < lineArray.length; i++) {
+    var start = lineArray[i][0],
+        end = lineArray[i][1] + 1;
+
+    if (!end) {
+      $wordSpans.eq(start).wrap('<span class="line_wrap">')
+    } else {
+      $wordSpans.slice(start, end).wrapAll('<span class="line_wrap">');
+    }
+  }
+}
 
 // JQUERY CUSTOM HELPER FUNCTIONS
 $.fn.lines = function (resized) {
@@ -834,17 +892,21 @@ $.fn.lines = function (resized) {
       $(this).addClass('is-wrapped')
       // backup content
       $(this).attr('data-text-original', $(this).html())
-      var content = $(this).html().split("\n");
 
+      // var content = $(this).html().split("\n");
+      var content = $(this).text()
+      wrapByLine($(this), content)
     } else {
       // assume that's in wrapped onReady
-      var content = $(this).attr('data-text-original').split("\n")
+      // var content = $(this).attr('data-text-original').split("\n")
+      var content = $(this).attr('data-text-original')
+      wrapByLine($(this), content)
     }
 
-    $.each(content, function(i, line){
-      buildStr += "<span>" + line + "</span>"
-    })
-
-    $(this).html(buildStr)
+    // $.each(content, function(i, line){
+    //   buildStr += "<span>" + line + "</span>"
+    // })
+    //
+    // $(this).html(buildStr)
   }
 };

@@ -11,7 +11,7 @@
   color: white
   &--project
     .hero__title
-      span::after
+      .line_wrap::after
         display: none
 
   &__background
@@ -50,6 +50,7 @@
       align-items: flex-start
     &--centered
       margin-left: 0
+      transform: translate3d(0,0,0)
       .container
         display: block
         text-align: center
@@ -59,6 +60,7 @@
     font-weight: 700
 
   &__title
+    position: relative
     font-size: 68px
     text-transform: uppercase
     margin: .2em 0 .4em
@@ -73,7 +75,7 @@
       display: block
       font-size: 140px
 
-    span
+    .line_wrap
       display: inline-block
       position: relative
       &::after
@@ -87,7 +89,7 @@
         background: currentColor
         transition: right .8s $easing
     &:hover
-      span::after
+      .line_wrap::after
         right: 25%
 
   &__more
@@ -128,10 +130,21 @@
   .hero
     &__contents
       margin-left: 0
+      transform: translate3d(0%,0,0)
 
     &__name
       font-size: 24px
     &__title
       font-size: 44px
+    &__more
+      font-size: 18px
+
++r($tablet)
+  .hero
+    &__name
+      font-size: 18px
+    &__title
+      font-size: 30px
+      margin: 1em 0
     &__more
       font-size: 18px
