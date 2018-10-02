@@ -348,13 +348,13 @@ $(document).ready(function(){
       },
     });
 
-    var gallerySwiperInst = $('[js-swiper-gallery]')
+    var gallerySwiperInst = $('[js-swiper-gallery]');
     if ( fromPjax ){
       gallerySwiperInst = $('[js-swiper-gallery]')[1]
     }
 
     // cases slider
-    if ( gallerySwiperInst.length > 0 ){
+    if ( gallerySwiperInst && gallerySwiperInst.length > 0 ){
       var gallerySwiper = new Swiper(gallerySwiperInst.get(0), {
         slideClass: "media-wrapper",
         slidesPerView: 'auto',
@@ -386,7 +386,7 @@ $(document).ready(function(){
       casesSwiperInst = $('[js-swiper-extra]')[1]
     }
 
-    if ( casesSwiperInst.length > 0 ){
+    if ( casesSwiperInst && casesSwiperInst.length > 0 ){
       // extra swiper
       var casesSwiper = new Swiper(casesSwiperInst.get(0), {
         slideClass: "s-extra__slide",
