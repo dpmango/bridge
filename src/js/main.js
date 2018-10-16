@@ -436,90 +436,90 @@ $(document).ready(function(){
     // https://codepen.io/dangodev/pen/bpjrRg
 
     // HOMEPAGE SLIDER
-    var $slider = $('[js-home-slider]');
-    if ( $slider.length === 0 ){ return }
-    var $slides = $slider.find('.home__slide');
-    var numberOfSlides = $slides.length
-    var activeSlide = 0 // first is the default
-    var sensitivity = 25
-    var transitionDuration = 400 // ms
-    var timer
-
-    // set widths
-    function setSizes(){
-      var containerWidth = $slider.parent().width()
-
-      $slider.css({ 'width': containerWidth * numberOfSlides })
-      $slides.css({ 'width': containerWidth })
-    }
-
-    setSizes();
-    _window.on('resize', debounce(setSizes, 200))
-
-
-    // hammer.js instance
-    var sliderManager = new Hammer.Manager(document.querySelector('[js-home-slider]'), {
-      // domEvents: true
-    });
-    sliderManager.add(
-      new Hammer.Pan({
-        direction: Hammer.DIRECTION_HORIZONTAL,
-        threshold: 0,
-        // domEvents: true,
-        pointers: 0 }
-      )
-    );
-
-    sliderManager.on('pan', function(e) {
-      var movePower = (e.deltaX * 1.2)
-      var percentage = 100 / numberOfSlides * movePower / window.innerWidth;
-      var transformPercentage = percentage - 100 / numberOfSlides * activeSlide;
-
-      $slider.css({
-        'transform': 'translate3d(' + transformPercentage + '%,0,0)'
-      });
-
-      if(e.isFinal) {
-        if (e.velocityX > 1) {
-          goToSlide(activeSlide - 1);
-        } else if (e.velocityX < -1) {
-          goToSlide(activeSlide + 1)
-        } else {
-          if (percentage <= -(sensitivity / numberOfSlides)) {
-            goToSlide(activeSlide + 1);
-          } else if (percentage >= (sensitivity / numberOfSlides)) {
-            goToSlide(activeSlide - 1);
-          } else {
-            goToSlide(activeSlide );
-          }
-        }
-      }
-    });
-
-    function goToSlide(number) {
-      if (number < 0) {
-        activeSlide = 0;
-      } else if (number > numberOfSlides - 1) {
-        activeSlide = numberOfSlides - 1
-      } else {
-        activeSlide = number;
-      }
-
-      $slider.addClass('is-animating');
-
-      var percentage = -(100 / numberOfSlides) * activeSlide;
-      $slider.css({
-        'transform': 'translate3d(' + percentage + '%,0,0)'
-      });
-
-      clearTimeout( timer );
-      timer = setTimeout( function() {
-        $slider.removeClass('is-animating');
-      }, transitionDuration );
-
-      triggerBody();
-
-    };
+    // var $slider = $('[js-home-slider]');
+    // if ( $slider.length === 0 ){ return }
+    // var $slides = $slider.find('.home__slide');
+    // var numberOfSlides = $slides.length
+    // var activeSlide = 0 // first is the default
+    // var sensitivity = 25
+    // var transitionDuration = 400 // ms
+    // var timer
+    //
+    // // set widths
+    // function setSizes(){
+    //   var containerWidth = $slider.parent().width()
+    //
+    //   $slider.css({ 'width': containerWidth * numberOfSlides })
+    //   $slides.css({ 'width': containerWidth })
+    // }
+    //
+    // setSizes();
+    // _window.on('resize', debounce(setSizes, 200))
+    //
+    //
+    // // hammer.js instance
+    // var sliderManager = new Hammer.Manager(document.querySelector('[js-home-slider]'), {
+    //   // domEvents: true
+    // });
+    // sliderManager.add(
+    //   new Hammer.Pan({
+    //     direction: Hammer.DIRECTION_HORIZONTAL,
+    //     threshold: 0,
+    //     // domEvents: true,
+    //     pointers: 0 }
+    //   )
+    // );
+    //
+    // sliderManager.on('pan', function(e) {
+    //   var movePower = (e.deltaX * 1.2)
+    //   var percentage = 100 / numberOfSlides * movePower / window.innerWidth;
+    //   var transformPercentage = percentage - 100 / numberOfSlides * activeSlide;
+    //
+    //   $slider.css({
+    //     'transform': 'translate3d(' + transformPercentage + '%,0,0)'
+    //   });
+    //
+    //   if(e.isFinal) {
+    //     if (e.velocityX > 1) {
+    //       goToSlide(activeSlide - 1);
+    //     } else if (e.velocityX < -1) {
+    //       goToSlide(activeSlide + 1)
+    //     } else {
+    //       if (percentage <= -(sensitivity / numberOfSlides)) {
+    //         goToSlide(activeSlide + 1);
+    //       } else if (percentage >= (sensitivity / numberOfSlides)) {
+    //         goToSlide(activeSlide - 1);
+    //       } else {
+    //         goToSlide(activeSlide );
+    //       }
+    //     }
+    //   }
+    // });
+    //
+    // function goToSlide(number) {
+    //   if (number < 0) {
+    //     activeSlide = 0;
+    //   } else if (number > numberOfSlides - 1) {
+    //     activeSlide = numberOfSlides - 1
+    //   } else {
+    //     activeSlide = number;
+    //   }
+    //
+    //   $slider.addClass('is-animating');
+    //
+    //   var percentage = -(100 / numberOfSlides) * activeSlide;
+    //   $slider.css({
+    //     'transform': 'translate3d(' + percentage + '%,0,0)'
+    //   });
+    //
+    //   clearTimeout( timer );
+    //   timer = setTimeout( function() {
+    //     $slider.removeClass('is-animating');
+    //   }, transitionDuration );
+    //
+    //   triggerBody();
+    //
+    // };
 
   }
 
@@ -609,6 +609,8 @@ $(document).ready(function(){
       mouseDistAbs = 0;
       mouseDist = 0;
   }
+
+  if ( $('#heroCanvas').length > 0 ){
 
   PIXI.utils.skipHello();
   var app = new PIXI.Application(winW, winH, {backgroundColor: 0x000000});
@@ -761,6 +763,8 @@ $(document).ready(function(){
   //Remove the base slider videos after extracting data to avoid extra load
   $(".carousel video").remove();
 
+  }
+  
   ////////////
   // CUSTOM SCROLL
   ////////////
