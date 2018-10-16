@@ -9,6 +9,17 @@
   z-index: 1
   // overflow: hidden
   color: white
+  &::after
+    display: inline-block
+    content: ' '
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    height: 35%
+    opacity: .3
+    z-index: 2
+    background: linear-gradient(180deg, rgba(0,0,0,.01) 0%, rgba(0,0,0,0.99) 100%)
   &--project
     .hero__title
       .line_wrap::after

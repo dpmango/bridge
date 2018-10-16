@@ -13,7 +13,7 @@
   &__wrapper
     display: flex
     align-items: center
-    padding: 55px 0
+    padding: 55px 65px
 
   &__logo
     flex: 0 0 auto
@@ -82,7 +82,7 @@
 +r($hd)
   .header
     &__wrapper
-      padding: 35px 0
+      padding: 35px 65px
     &__logo
       font-size: 25px
     &__menu
@@ -94,7 +94,9 @@
 
 +r($desktop)
   .header
-
+    &__wrapper
+      padding-left: 40px
+      padding-right: 40px
 
 +r($tablet)
   .header
@@ -111,3 +113,6 @@
 
 +r($mobile)
   .header
+    &__wrapper
+      padding-left: 20px
+      padding-right: 20px
