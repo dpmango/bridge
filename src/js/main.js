@@ -30,6 +30,28 @@ $(document).ready(function(){
     force3D: true
   });
 
+  // slider globals
+  var winW = $(window).outerWidth(),
+      winH = $(window).outerHeight();
+
+  // Interaction
+  var sliderN = 0, // Initial slide
+      sliderQ = ($(".carousel .hero").length) - 1,
+      sliderW = (winW);
+      mouseInit = 0,
+      mouseX = 0,
+      swiping = false,
+      mouseDist = 0,
+      mouseDistAbs = 0,
+      mouseThreshold = 200,
+      movingLeft = false,
+      movingRight = false,
+      displacementX = 1500,
+      displacementY = 0,
+      transitioning = false,
+      transitioningTime = 1
+  ;
+
   ////////////
   // READY - triggered when PJAX DONE
   ////////////
@@ -501,6 +523,243 @@ $(document).ready(function(){
 
   }
 
+
+
+  // Swiping events
+  $("body").on("mousedown", function(e) {
+      e.preventDefault();
+      swiping = true;
+      mouseInit = e.clientX;
+  }).on("touchstart", function(e) {
+      swiping = true;
+      mouseInit = e.originalEvent.touches[0].clientX;
+  }).on("touchmove", function(e) {
+      if (swiping) {
+          mouseX = e.originalEvent.touches[0].clientX;
+          slideIt();
+      }
+  }).on("mousemove", function(e) {
+      if (swiping) {
+          mouseX = e.clientX;
+          slideIt();
+      }
+  }).on("mouseup touchend", function(e) {
+      e.preventDefault();
+      if (swiping) {
+          slideEnd();
+      }
+  })
+
+  // Scrolling events
+  $(".carousel").on("mousewheel", function(event) {
+      if (event.deltaY == -1) {
+          if (sliderN < sliderQ && !transitioning) {
+              transitioningTime = 2;
+              transitioning = true;
+              sliderN += 1;
+              TweenMax.set(window, {
+                  transitioning: false,
+                  delay: 1
+              })
+          }
+      } else if (event.deltaY == 1) {
+          if (sliderN > 0 && !transitioning) {
+              transitioningTime = 2;
+              transitioning = true;
+              sliderN -= 1;
+              TweenMax.set(window, {
+                  transitioning: false,
+                  delay: 1
+              })
+          }
+      }
+  })
+
+  function slideIt() {
+      if (swiping) {
+          transitioningTime = 1;
+          // Swiping calculations
+          mouseDist = mouseInit - mouseX;
+          mouseDistAbs = Math.abs(mouseDist);
+
+          // Detect Direction
+          if (mouseDist < 0) {
+              movingLeft = true;
+              movingRight = false;
+          } else if (mouseDist > 0) {
+              movingRight = true;
+              movingLeft = false;
+          }
+      }
+  }
+
+  function slideEnd() {
+      swiping = false;
+      if (mouseDistAbs > mouseThreshold && movingRight) {
+          if (sliderN != sliderQ) {
+              sliderN += 1;
+          }
+      } else if (mouseDistAbs > mouseThreshold && movingLeft) {
+          if (sliderN != 0) {
+              sliderN -= 1;
+          }
+      }
+      movingLeft = false;
+      movingRight = false;
+      mouseDistAbs = 0;
+      mouseDist = 0;
+  }
+
+  PIXI.utils.skipHello();
+  var app = new PIXI.Application(winW, winH, {backgroundColor: 0x000000});
+  document.getElementById("heroCanvas").appendChild(app.view);
+  app.stage.interactive = true;
+
+  // Global container
+  var container = new PIXI.Container();
+  app.stage.addChild(container);
+
+  // Arrays
+  var videoTexture = [];
+  var video = [];
+  var displacementSprite = [];
+  var mask = [];
+  var displacementFilter = [];
+  var slide = [];
+
+  $(".carousel .hero").each(function(i, el) {
+      // Video texture
+      videoTexture[i] = PIXI.Texture.fromVideo($(el).find("video source").attr("src"));
+      videoTexture[i].baseTexture.source.loop = true;
+      videoTexture[i].baseTexture.source.muted = true;
+      videoTexture[i].wrapMode = PIXI.WRAP_MODES.REPEAT;
+
+      // Video box
+      video[i] = new PIXI.Sprite(videoTexture[i]);
+      video[i].width = sliderW;
+      video[i].height = sliderW * (9 / 16);
+      video[i].x = i * sliderW;
+
+      // Displacement maps
+      displacementSprite[i] = PIXI.Sprite.fromImage('img/sliderDM.jpg');
+      displacementSprite[i].width = sliderW;
+      displacementSprite[i].wrapMode = PIXI.WRAP_MODES.REPEAT;
+
+      // Masking wrap
+      mask[i] = new PIXI.Graphics();
+      mask[i].beginFill(0x808080);
+      mask[i].drawRect(0, 0, sliderW, sliderW * (9 / 16) + 100);
+      container.addChild(mask[i])
+
+      slide[i] = new PIXI.Container();
+      container.addChild(slide[i]);
+
+      slide[i].addChild(video[i]);
+      slide[i].addChild(displacementSprite[i]);
+      slide[i].addChild(mask[i]);
+
+      // Displacement Filter
+      displacementFilter[i] = new PIXI.filters.DisplacementFilter(displacementSprite[i]);
+      displacementFilter[i].scale.x = 0;
+      displacementFilter[i].scale.y = 0;
+
+      video[i].filters = [displacementFilter[i]]
+
+      slide[i].mask = mask[i];
+  })
+
+  // Animate
+  app.ticker.add(function() {
+      $.each(video, function(i, el) {
+          // Limits
+          if (i == 0 && movingLeft && sliderN == 0 || i == sliderQ && movingRight && sliderN == sliderQ) {
+              TweenMax.to(slide[i], transitioningTime, {
+                  x: i * sliderW - (mouseDist / 10) - sliderW * sliderN,
+              })
+              TweenMax.to(video[i], transitioningTime, {
+                  x: -(sliderW / 2) * (i - sliderN) + mouseDist / 20,
+              })
+              TweenMax.to(displacementSprite[i], transitioningTime, {
+                  x: -(sliderW / 2) * (i - sliderN) + mouseDist / 20,
+              })
+          } else {
+              TweenMax.to(slide[i], transitioningTime, {
+                  x: i * sliderW - mouseDist - sliderW * sliderN,
+              })
+              if (winH > winW * 9 / 16) {
+
+              } else {
+                  TweenMax.to(video[i], transitioningTime, {
+                      x: -(sliderW / 2) * (i - sliderN) + mouseDist / 2,
+                  })
+              }
+              TweenMax.to(displacementSprite[i], transitioningTime, {
+                  x: -(sliderW / 2) * (i - sliderN) + mouseDist / 2,
+              })
+
+              if (i == sliderN) { // Current Page
+                  TweenMax.to(displacementFilter[i].scale, transitioningTime, {
+                      x: 0 + mouseDist * displacementX / sliderW,
+                  })
+              } else if (i > sliderN) { // Next Page
+                  TweenMax.to(displacementFilter[i].scale, transitioningTime, {
+                      x: -displacementX + mouseDistAbs * displacementX / sliderW
+                  })
+              } else if (i < sliderN) { // Previous Page
+                  TweenMax.to(displacementFilter[i].scale, transitioningTime, {
+                      x: displacementX - mouseDistAbs * displacementX / sliderW
+                  })
+              }
+          }
+      })
+      $(".carousel .hero").each(function(i, el) {
+          // Limits
+          if (i == 0 && movingLeft && sliderN == 0 || i == sliderQ && movingRight && sliderN == sliderQ) {
+              TweenMax.to($(el), transitioningTime, {
+                  x: i * sliderW - mouseDist / 10 - sliderW * sliderN,
+              })
+          } else {
+              TweenMax.to($(el), transitioningTime, {
+                  x: i * sliderW - mouseDist - sliderW * sliderN,
+              })
+          }
+      })
+  });
+
+  // Responsive behavior
+  $(window).on("resize", function() {
+      resizing();
+  })
+
+  resizing();
+
+  function resizing() {
+      winW = $(window).outerWidth();
+      sliderW = winW;
+      winH = $(window).outerHeight();
+
+      app.renderer.resize(window.innerWidth, window.innerHeight);
+
+      $.each(video, function(i, el) {
+          mask[i].height = winH;
+          mask[i].width = sliderW;
+          if (winH > winW * 9 / 16) {
+              video[i].height = winH;
+              video[i].width = winH * 16 / 9;
+              video[i].x = winW / 2 - video[i].width / 2;
+              video[i].y = winH / 2 - video[i].height / 2;
+          } else {
+              video[i].width = sliderW;
+              video[i].height = sliderW * 9 / 16;
+              video[i].x = winW / 2 - video[i].width / 2;
+              video[i].y = winH / 2 - video[i].height / 2;
+              mask[i].drawRect(0, 0, sliderW, sliderW * (9 / 16) + 100);
+          }
+      })
+  }
+
+  //Remove the base slider videos after extracting data to avoid extra load
+  $(".carousel video").remove();
 
   ////////////
   // CUSTOM SCROLL

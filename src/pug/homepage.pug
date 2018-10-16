@@ -4,12 +4,12 @@ bodyClass: homepage
 ---
 extends shared/_layout
 block content
-  
-  - 
+
+  -
     var homeSlides = [
       {
         id: 1,
-        video: "/video/macallan.mp4", 
+        video: "/video/macallan.mp4",
         image: "slide",
         name: "The Macallan",
         title: "Изнанка &#10; глянцевых &#10; фото-сессий",
@@ -17,7 +17,7 @@ block content
       },
       {
         id: 2,
-        video: "/video/jim-beam.mp4", 
+        video: "/video/jim-beam.mp4",
         image: "slide",
         name: "JIM BEAM",
         title: "Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS",
@@ -25,7 +25,7 @@ block content
       },
       {
         id: 3,
-        video: "/video/bigbon.mp4", 
+        video: "/video/bigbon.mp4",
         image: "slide",
         name: "Big Bon",
         title: "Ты решаешь, &#10; как ты отдыхаешь",
@@ -33,7 +33,7 @@ block content
       },
       {
         id: 4,
-        video: "/video/tele2.mp4", 
+        video: "/video/tele2.mp4",
         image: "slide",
         name: "Tele 2",
         title: "Косплей &#10; живет в каждом",
@@ -41,38 +41,34 @@ block content
       },
       {
         id: 5,
-        video: "/video/sevidov.mp4", 
+        video: "/video/sevidov.mp4",
         image: "slide",
-        name: "The Macallan",
+        name: "The Macaasdllan",
         title: "Премьера песни &#10; Антона Севидова &#10; Avoid",
         url: "project.html",
       },
       {
         id: 6,
-        video: "/video/flash-up.mp4", 
+        video: "/video/flash-up.mp4",
         image: "slide",
         name: "Flash Up",
         title: "В плавках &#10; с горы? &#10; Легко!",
         url: "project.html",
       }
     ]
-    
+
   // HOME
   .home(data-nav-color="white")#scroller-js
-    .home__slider
-      .home__slidable(js-home-slider)
+    .carousel#heroCanvas
+      .home__slider
         each slide in homeSlides
           // slide
           .home__slide.hero
             .hero__background
               video(autoplay muted loop)
                 source(src=slide.video type="video/mp4")
-              // fallback image  
-              img(src='img/' + slide.image + '.png' srcset='img/' + slide.image + '@2x.png 2x')
-              
-            .hero__contents
-              .container
-                .hero__name= slide.name
-                a(href=slide.url js-wrap-spans).hero__title!= slide.title
-                a(href=slide.url).hero__more.link-border о проекте
-      
+              .hero__contents
+                .container
+                  .hero__name= slide.name
+                  a(href=slide.url js-wrap-spans).hero__title!= slide.title
+                  a(href=slide.url).hero__more.link-border о проекте
