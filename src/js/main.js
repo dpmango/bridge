@@ -336,14 +336,17 @@ $(document).ready(function(){
       var $this = $(this);
       var video = $this.find('video').get(0);
       if (video) {
-        var videoPromise = video.play()
+        var videoPromise = video.play();
         if (videoPromise !== undefined) {
           videoPromise
             .catch(function(err) {
+              console.log('video play error', err)
+              video.play()
               // Auto-play was prevented
               // Show a UI element to let the user manually start playback
             })
             .then(() => {
+              console.log('video started')
               // Auto-play started
             });
         }
