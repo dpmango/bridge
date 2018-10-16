@@ -46,7 +46,7 @@ $(document).ready(function(){
       mouseThreshold = 200,
       movingLeft = false,
       movingRight = false,
-      displacementX = 1500,
+      displacementX = 500,
       displacementY = 0,
       transitioning = false,
       transitioningTime = 1
@@ -543,7 +543,6 @@ $(document).ready(function(){
   }
 
 
-
   // Swiping events
   $("body").on("mousedown", function(e) {
       e.preventDefault();
@@ -573,7 +572,7 @@ $(document).ready(function(){
   $(".carousel").on("mousewheel", function(event) {
       if (event.deltaY == -1) {
           if (sliderN < sliderQ && !transitioning) {
-              transitioningTime = 2;
+              transitioningTime = 3;
               transitioning = true;
               sliderN += 1;
               TweenMax.set(window, {
@@ -583,7 +582,7 @@ $(document).ready(function(){
           }
       } else if (event.deltaY == 1) {
           if (sliderN > 0 && !transitioning) {
-              transitioningTime = 2;
+              transitioningTime = 3;
               transitioning = true;
               sliderN -= 1;
               TweenMax.set(window, {
@@ -596,7 +595,7 @@ $(document).ready(function(){
 
   function slideIt() {
       if (swiping) {
-          transitioningTime = 1;
+          transitioningTime = 2;
           // Swiping calculations
           mouseDist = mouseInit - mouseX;
           mouseDistAbs = Math.abs(mouseDist);
@@ -630,159 +629,232 @@ $(document).ready(function(){
   }
 
   if ( $('#heroCanvas').length > 0 ){
+    carousel();  
+  }
 
-  PIXI.utils.skipHello();
-  var app = new PIXI.Application(winW, winH, {backgroundColor: 0x000000});
-  document.getElementById("heroCanvas").appendChild(app.view);
-  app.stage.interactive = true;
+  function carousel() {
+      PIXI.utils.skipHello();
+      var app = new PIXI.Application(winW, winH, {backgroundColor: 0x000000});
+      document.getElementById("heroCanvas").appendChild(app.view);
+      app.stage.interactive = true;
 
-  // Global container
-  var container = new PIXI.Container();
-  app.stage.addChild(container);
+      // Global container
+      var container = new PIXI.Container();
+      app.stage.addChild(container);
 
-  // Arrays
-  var videoTexture = [];
-  var video = [];
-  var displacementSprite = [];
-  var mask = [];
-  var displacementFilter = [];
-  var slide = [];
+      // Arrays
+      var videoTexture = [];
+      var video = [];
+      var displacementSprite = [];
+      var mask = [];
+      var displacementFilter = [];
+      var slide = [];
 
-  $(".carousel .hero").each(function(i, el) {
-      // Video texture
-      videoTexture[i] = PIXI.Texture.fromVideo($(el).find("video source").attr("src"));
-      videoTexture[i].baseTexture.source.loop = true;
-      videoTexture[i].baseTexture.source.muted = true;
-      videoTexture[i].wrapMode = PIXI.WRAP_MODES.REPEAT;
+      $(".carousel .hero").each(function(i, el) {
+          // Video texture
+          videoTexture[i] = PIXI.Texture.fromVideo($(el).find("video source").attr("src"));
+          videoTexture[i].baseTexture.source.loop = false;
+          videoTexture[i].baseTexture.source.muted = true;
+          videoTexture[i].wrapMode = PIXI.WRAP_MODES.REPEAT;
 
-      // Video box
-      video[i] = new PIXI.Sprite(videoTexture[i]);
-      video[i].width = sliderW;
-      video[i].height = sliderW * (9 / 16);
-      video[i].x = i * sliderW;
+          // Video box
+          video[i] = new PIXI.Sprite(videoTexture[i]);
+          video[i].width = sliderW;
+          video[i].height = sliderW * (9 / 16);
+          video[i].x = i * sliderW;
 
-      // Displacement maps
-      displacementSprite[i] = PIXI.Sprite.fromImage('img/sliderDM.jpg');
-      displacementSprite[i].width = sliderW;
-      displacementSprite[i].wrapMode = PIXI.WRAP_MODES.REPEAT;
+          // Displacement maps
+          displacementSprite[i] = PIXI.Sprite.fromImage('img/sliderDM.jpg');
+          displacementSprite[i].width = sliderW;
+          displacementSprite[i].wrapMode = PIXI.WRAP_MODES.REPEAT;
 
-      // Masking wrap
-      mask[i] = new PIXI.Graphics();
-      mask[i].beginFill(0x808080);
-      mask[i].drawRect(0, 0, sliderW, sliderW * (9 / 16) + 100);
-      container.addChild(mask[i])
+          // Masking wrap
+          mask[i] = new PIXI.Graphics();
+          mask[i].beginFill(0x808080);
+          mask[i].drawRect(0, 0, sliderW, sliderW * (9 / 16) + 100);
+          container.addChild(mask[i])
 
-      slide[i] = new PIXI.Container();
-      container.addChild(slide[i]);
+          slide[i] = new PIXI.Container();
+          container.addChild(slide[i]);
 
-      slide[i].addChild(video[i]);
-      slide[i].addChild(displacementSprite[i]);
-      slide[i].addChild(mask[i]);
+          slide[i].addChild(video[i]);
+          slide[i].addChild(displacementSprite[i]);
+          slide[i].addChild(mask[i]);
 
-      // Displacement Filter
-      displacementFilter[i] = new PIXI.filters.DisplacementFilter(displacementSprite[i]);
-      displacementFilter[i].scale.x = 0;
-      displacementFilter[i].scale.y = 0;
+          // Displacement Filter
+          displacementFilter[i] = new PIXI.filters.DisplacementFilter(displacementSprite[i]);
+          displacementFilter[i].scale.x = 0;
+          displacementFilter[i].scale.y = 0;
 
-      video[i].filters = [displacementFilter[i]]
+          video[i].filters = [displacementFilter[i]]
 
-      slide[i].mask = mask[i];
-  })
+          slide[i].mask = mask[i];
+      })
 
-  // Animate
-  app.ticker.add(function() {
-      $.each(video, function(i, el) {
-          // Limits
-          if (i == 0 && movingLeft && sliderN == 0 || i == sliderQ && movingRight && sliderN == sliderQ) {
-              TweenMax.to(slide[i], transitioningTime, {
-                  x: i * sliderW - (mouseDist / 10) - sliderW * sliderN,
-              })
-              TweenMax.to(video[i], transitioningTime, {
-                  x: -(sliderW / 2) * (i - sliderN) + mouseDist / 20,
-              })
-              TweenMax.to(displacementSprite[i], transitioningTime, {
-                  x: -(sliderW / 2) * (i - sliderN) + mouseDist / 20,
-              })
-          } else {
-              TweenMax.to(slide[i], transitioningTime, {
-                  x: i * sliderW - mouseDist - sliderW * sliderN,
-              })
-              if (winH > winW * 9 / 16) {
-
-              } else {
+      // Animate
+      app.ticker.add(function() {
+          $.each(video, function(i, el) {
+              // Limits
+              if (i == 0 && movingLeft && sliderN == 0 || i == sliderQ && movingRight && sliderN == sliderQ) {
+                  TweenMax.to(slide[i], transitioningTime, {
+                      ease: Power4.easeOut,
+                      x: i * sliderW - (mouseDist / 10) - sliderW * sliderN,
+                  })
                   TweenMax.to(video[i], transitioningTime, {
+                      ease: Power4.easeOut,
+                      x: -(sliderW / 2) * (i - sliderN) + mouseDist / 20,
+                  })
+                  TweenMax.to(displacementSprite[i], transitioningTime, {
+                      ease: Power4.easeOut,
+                      x: -(sliderW / 2) * (i - sliderN) + mouseDist / 20,
+                  })
+              } else {
+                  TweenMax.to(slide[i], transitioningTime, {
+                      ease: Power4.easeOut,
+                      x: i * sliderW - mouseDist - sliderW * sliderN,
+                  })
+                  if (winH > winW * 9 / 16) {
+
+                  } else {
+                      TweenMax.to(video[i], transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: -(sliderW / 2) * (i - sliderN) + mouseDist / 2,
+                      })
+                  }
+                  TweenMax.to(displacementSprite[i], transitioningTime, {
+                      ease: Power4.easeOut,
                       x: -(sliderW / 2) * (i - sliderN) + mouseDist / 2,
                   })
-              }
-              TweenMax.to(displacementSprite[i], transitioningTime, {
-                  x: -(sliderW / 2) * (i - sliderN) + mouseDist / 2,
-              })
 
-              if (i == sliderN) { // Current Page
-                  TweenMax.to(displacementFilter[i].scale, transitioningTime, {
-                      x: 0 + mouseDist * displacementX / sliderW,
-                  })
-              } else if (i > sliderN) { // Next Page
-                  TweenMax.to(displacementFilter[i].scale, transitioningTime, {
-                      x: -displacementX + mouseDistAbs * displacementX / sliderW
-                  })
-              } else if (i < sliderN) { // Previous Page
-                  TweenMax.to(displacementFilter[i].scale, transitioningTime, {
-                      x: displacementX - mouseDistAbs * displacementX / sliderW
-                  })
+                  if (i == sliderN) { // Current Page
+                      TweenMax.to(displacementFilter[i].scale, transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: 0 + mouseDist * displacementX / sliderW,
+                      })
+                  } else if (i > sliderN) { // Next Page
+                      TweenMax.to(displacementFilter[i].scale, transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: -displacementX + mouseDistAbs * displacementX / sliderW
+                      })
+                  } else if (i < sliderN) { // Previous Page
+                      TweenMax.to(displacementFilter[i].scale, transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: displacementX - mouseDistAbs * displacementX / sliderW
+                      })
+                  }
               }
-          }
-      })
-      $(".carousel .hero").each(function(i, el) {
-          // Limits
-          if (i == 0 && movingLeft && sliderN == 0 || i == sliderQ && movingRight && sliderN == sliderQ) {
-              TweenMax.to($(el), transitioningTime, {
-                  x: i * sliderW - mouseDist / 10 - sliderW * sliderN,
-              })
-          } else {
-              TweenMax.to($(el), transitioningTime, {
-                  x: i * sliderW - mouseDist - sliderW * sliderN,
-              })
-          }
-      })
-  });
+          })
+          var containerW = [];
+          $(".carousel .hero").each(function(i, el) {
+              containerW[i] = $(el).outerWidth();
+              // Limits
+              if (i == sliderN) {
+                  TweenMax.to($(el), transitioningTime, {
+                      ease: Power4.easeOut,
+                      x: 0
+                  })
+                  if (movingRight) {
+                      TweenMax.to($(el), transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: -mouseDist * (containerW[i] - (sliderW / 12)) / sliderW
+                      })
+                  } else if (movingLeft) {
+                      TweenMax.to($(el), transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: -mouseDist * (sliderW - (sliderW / 4)) / sliderW
+                      })
+                  }
+                  if (i == 0 && movingLeft) {
+                      TweenMax.to($(el), transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: -mouseDist / 10 * (sliderW - (sliderW / 4)) / sliderW
+                      })
+                  }
+                  if (i == sliderQ && movingRight) {
+                      TweenMax.to($(el), transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: -mouseDist / 10 * (containerW[i] - (sliderW / 12)) / sliderW
+                      })
+                  }
+              } else if (i < sliderN) {
+                  TweenMax.to($(el), transitioningTime, {
+                      ease: Power4.easeOut,
+                      x: -sliderW * (sliderN - i) +
+                      (sliderW - containerW[i] + (sliderW / 12)) -
+                      mouseDist * (containerW[i] - (sliderW / 12)) / sliderW
+                  })
+                  if (i < sliderN - 1) {
+                      TweenMax.to($(el), transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: -sliderW * (sliderN - i) +
+                          (sliderW - containerW[i] + (sliderW / 12)) -
+                          mouseDist
+                      })
+                  }
+                  if (sliderN == sliderQ && movingRight) {
+                      TweenMax.to($(el), transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: -sliderW * (sliderN - i) +
+                          (sliderW - containerW[i] + (sliderW / 12)) -
+                          mouseDist / 10 * (containerW[i] - (sliderW / 12)) / sliderW
+                      })
+                  }
+              } else if (i > sliderN) {
+                  TweenMax.to($(el), transitioningTime, {
+                      ease: Power4.easeOut,
+                      x: sliderW * i +
+                      (sliderN - i) * (sliderW / 4) -
+                      sliderN * sliderW -
+                      mouseDist * (sliderW - (sliderW / 4)) / sliderW
+                  })
+                  if (sliderN == 0 && movingLeft) {
+                      TweenMax.to($(el), transitioningTime, {
+                          ease: Power4.easeOut,
+                          x: sliderW * i +
+                          (sliderN - i) * (sliderW / 4) -
+                          sliderN * sliderW -
+                          mouseDist / 10 * (sliderW - (sliderW / 4)) / sliderW
+                      })
+                  }
+              }
+          })
+      });
 
-  // Responsive behavior
-  $(window).on("resize", function() {
+      // Responsive behavior
+      $(window).on("resize", function() {
+          resizing();
+      })
+
       resizing();
-  })
 
-  resizing();
+      function resizing() {
+          winW = $(window).outerWidth();
+          sliderW = (winW);
+          winH = $(window).outerHeight();
 
-  function resizing() {
-      winW = $(window).outerWidth();
-      sliderW = winW;
-      winH = $(window).outerHeight();
+          app.renderer.resize(window.innerWidth, window.innerHeight);
 
-      app.renderer.resize(window.innerWidth, window.innerHeight);
-
-      $.each(video, function(i, el) {
-          mask[i].height = winH;
-          mask[i].width = sliderW;
-          if (winH > winW * 9 / 16) {
-              video[i].height = winH;
-              video[i].width = winH * 16 / 9;
-              video[i].x = winW / 2 - video[i].width / 2;
-              video[i].y = winH / 2 - video[i].height / 2;
-          } else {
-              video[i].width = sliderW;
-              video[i].height = sliderW * 9 / 16;
-              video[i].x = winW / 2 - video[i].width / 2;
-              video[i].y = winH / 2 - video[i].height / 2;
-              mask[i].drawRect(0, 0, sliderW, sliderW * (9 / 16) + 100);
-          }
-      })
+          $.each(video, function(i, el) {
+              mask[i].height = winH;
+              mask[i].width = sliderW;
+              displacementSprite[i].width = sliderW;
+              if (winH > winW * 9 / 16) {
+                  video[i].height = winH;
+                  video[i].width = winH * 16 / 9;
+                  video[i].x = 0;
+                  video[i].y = 0;
+                  mask[i].drawRect(0, 0, sliderW, winH * (16 / 9) + 100);
+              } else {
+                  video[i].width = sliderW;
+                  video[i].height = sliderW * 9 / 16;
+                  mask[i].drawRect(0, 0, sliderW, sliderW * (9 / 16));
+              }
+          })
+      }
   }
 
   //Remove the base slider videos after extracting data to avoid extra load
   $(".carousel video").remove();
-
-  }
 
   ////////////
   // CUSTOM SCROLL

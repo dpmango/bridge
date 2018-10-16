@@ -162,14 +162,28 @@
 
 // Carlos G. Notario canvas based slider
 .carousel
-    z-index: 100
-    height: 100%
-    .home__slider
-        position: absolute
-    .hero
-        position: absolute
-        width: 100%
-        height: 100%
-    canvas
-        position: relative
-        z-index: 0
+  z-index: 100
+  height: 100%
+  .home__slider
+    position: absolute
+  .hero
+    padding-left: 20%
+    padding-right: 3%
+    position: absolute
+    width: auto
+    height: auto
+    transform: translateX(0)
+  canvas
+    position: relative
+    z-index: 0
+  .hero__contents
+    transform: translateX(0)
+    padding: 0
+    margin: auto 0
+    width: auto
+  .container
+    width: auto
+    padding: 0
+    .line_wrap
+      width: auto
+      white-space: nowrap

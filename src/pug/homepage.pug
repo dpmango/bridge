@@ -59,14 +59,14 @@ block content
 
   // HOME
   .home(data-nav-color="white")#scroller-js
-    .carousel#heroCanvas
-      .home__slider
-        each slide in homeSlides
-          // slide
-          .home__slide.hero
-            .hero__background
-              video(autoplay muted loop)
-                source(src=slide.video type="video/mp4")
+      .carousel#heroCanvas
+        .home__slider
+          each slide in homeSlides
+            // slide
+            .home__slide.hero
+              .hero__background
+                video(autoplay muted loop)
+                  source(src=slide.video type="video/mp4")
               .hero__contents
                 .container
                   .hero__name= slide.name
