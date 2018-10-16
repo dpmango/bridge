@@ -653,7 +653,7 @@ $(document).ready(function(){
       $(".carousel .hero").each(function(i, el) {
           // Video texture
           videoTexture[i] = PIXI.Texture.fromVideo($(el).find("video source").attr("src"));
-          videoTexture[i].baseTexture.source.loop = false;
+          videoTexture[i].baseTexture.source.loop = true;
           videoTexture[i].baseTexture.source.muted = true;
           videoTexture[i].wrapMode = PIXI.WRAP_MODES.REPEAT;
 
