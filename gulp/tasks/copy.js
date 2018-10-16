@@ -33,6 +33,7 @@ gulp.task('copy', [
 ]);
 
 gulp.task('copy:watch', function() {
+  gulp.watch(config.src.video + '/*.*', ['copy:video']);
   gulp.watch(config.src.vendor + '/**/*.*', ['copy:vendor']);
   gulp.watch(config.src.root + '/*.*', ['copy:rootfiles']);
 });

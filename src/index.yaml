@@ -6,7 +6,7 @@ PageList:
 - file: project.html
   ready: 80
 - file: cases.html
-  ready: 80
+  ready: 100
 - file: contact.html
   ready: 80
 - file: about.html

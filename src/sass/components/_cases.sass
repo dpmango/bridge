@@ -40,7 +40,8 @@
     transform: translate3d(0,0,0)
     backface-visibility: hidden
     &::before
-      display: inline-block
+      // display: inline-block
+      display: none
       content: ' '
       position: absolute 0
       z-index: 2
@@ -49,7 +50,9 @@
       transform: translate3d(0,0,0)
       transition: opacity .4s $easing
   &__content
-    padding: 35px 45px
+    // padding: 35px 45px
+    margin-top: 2vw
+    padding-left: 4.87203%
 
   &__name
     font-size: 20px

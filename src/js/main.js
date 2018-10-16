@@ -335,15 +335,27 @@ $(document).ready(function(){
     .on('mouseover', '[js-video-hover]', function(){
       var $this = $(this);
       var video = $this.find('video').get(0);
-
-      video.play()
+      if (video) {
+        var videoPromise = video.play()
+        if (videoPromise !== undefined) {
+          videoPromise
+            .catch(function(err) {
+              // Auto-play was prevented
+              // Show a UI element to let the user manually start playback
+            })
+            .then(() => {
+              // Auto-play started
+            });
+        }
+      }
     })
     .on('mouseout', '[js-video-hover]', function(){
       var $this = $(this);
       var video = $this.find('video').get(0);
-
-      video.currentTime = 0;
-      video.pause()
+      if (video){
+        video.currentTime = 0;
+        video.pause()
+      }
     })
 
 
@@ -358,12 +370,16 @@ $(document).ready(function(){
       slideClass: "cases__slide",
       slidesPerView: 'auto',
       freeMode: true,
+      mousewheel: {
+        sensitivity: .5
+      },
       // grabCursor: true,
       resistanceRatio: 0.85,
       freeModeMomentumRatio: 0.7,
       freeModeMomentumVelocityRatio: 0.8,
       freeModeMomentumBounceRatio: 0.6,
-      freeModeSticky: true,
+      // freeModeSticky: true,
+      freeModeSticky: false,
       scrollbar: {
         el: '.swiper-scrollbar',
         draggable: true,
@@ -764,7 +780,7 @@ $(document).ready(function(){
   $(".carousel video").remove();
 
   }
-  
+
   ////////////
   // CUSTOM SCROLL
   ////////////
