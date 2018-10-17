@@ -5,15 +5,21 @@ extends shared/_layout
 block content
   
   // PROJECT
-  .bonus#scroller-js
+  .project#scroller-js
     .hero.hero--project(data-nav-color="white")
       .hero__background
-        video(autoplay muted loop)
-          source(src='/video/jim-beam.mp4' type="video/mp4")
+        video(poster="/video/bonusBg.jpg" autoplay muted loop)
+          source(src='/video/bonusBg.mp4' type="video/mp4")
 
       .hero__contents
         .container
-          .hero__name Бонус
-          .hero__title(js-wrap-spans) Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
-          a(href="#").hero__more.link-border о проекте
+          .hero__name Наш подход
+          .hero__title Мы проверяем <br> наши идеи <br> на себе
+          a(href="#" js-play-hero-video).hero__more.link-border смотреть видео
         
+      .hero__video-player
+        .video-player(js-video-player)
+          .media-wrapper.media-wrapper--16-9
+            video(poster="/video/bonusBg.jpg")
+              source(src='/video/POD_DRUGIM_UGLOM_V2.mp4' type="video/mp4")
+      

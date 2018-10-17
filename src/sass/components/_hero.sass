@@ -66,6 +66,18 @@
         display: block
         text-align: center
 
+  // bonus page - play video
+  &__video-player
+    position: absolute 0
+    z-index: 3
+    opacity: 0
+    pointer-events: none
+
+  &.is-video-playing
+    .hero__video-player
+      opacity: 1
+      pointer-events: all
+
   &__name
     font-size: 35px
     font-weight: 700
