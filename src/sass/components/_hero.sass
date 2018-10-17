@@ -85,6 +85,7 @@
   &__title
     position: relative
     font-size: 68px
+    font-size: 5.5vw
     text-transform: uppercase
     margin: .2em 0 .4em
     text-transform: uppercase
@@ -172,10 +173,12 @@
     &__more
       font-size: 18px
 
+
 // Carlos G. Notario canvas based slider
 .carousel
   z-index: 100
   height: 100%
+  cursor: grab
   .home__slider
     position: absolute
   .hero
@@ -185,6 +188,13 @@
     width: auto
     height: auto
     transform: translateX(0)
+    z-index: 2
+    a
+      pointer-events: none
+    &.active
+      z-index: 1
+      a
+        pointer-events: all
   canvas
     position: relative
     z-index: 0
@@ -196,6 +206,7 @@
   .container
     width: auto
     padding: 0
+    cursor: pointer
     .line_wrap
       width: auto
       white-space: nowrap

@@ -25,8 +25,8 @@ block content
       },
       {
         id: 3,
-        // video: "/video/bigbon.mp4",
-        video: "/video/macallan.mp4",
+        video: "/video/bigbon.mp4",
+        // video: "/video/macallan.mp4",
         image: "slide",
         name: "Big Bon",
         title: "Ты решаешь, &#10; как ты отдыхаешь",
@@ -34,8 +34,8 @@ block content
       },
       {
         id: 4,
-        // video: "/video/tele2.mp4",
-        video: "/video/jim-beam.mp4",
+        video: "/video/tele2.mp4",
+        // video: "/video/jim-beam.mp4",
         image: "slide",
         name: "Tele 2",
         title: "Косплей &#10; живет в каждом",
@@ -51,8 +51,8 @@ block content
       },
       {
         id: 6,
-        // video: "/video/flash-up.mp4",
-        video: "/video/macallan.mp4",
+        video: "/video/flash-up.mp4",
+        // video: "/video/macallan.mp4",
         image: "slide",
         name: "Flash Up",
         title: "В плавках &#10; с горы? &#10; Легко!",
@@ -62,16 +62,13 @@ block content
 
   // HOME
   .home(data-nav-color="white")#scroller-js
-      .carousel#heroCanvas
-        .home__slider
-          each slide in homeSlides
-            // slide
-            .home__slide.hero
-              .hero__background
-                video(autoplay muted loop)
-                  source(src=slide.video type="video/mp4")
-              .hero__contents
-                .container
-                  .hero__name= slide.name
-                  a(href=slide.url js-wrap-spans).hero__title!= slide.title
-                  a(href=slide.url).hero__more.link-border о проекте
+    .carousel#heroCanvas
+      .home__slider
+        each slide in homeSlides
+          // slide
+          .home__slide.hero(data-video=slide.video)
+            .hero__contents
+              .container
+                .hero__name= slide.name
+                a(href=slide.url js-wrap-spans).hero__title!= slide.title
+                a(href=slide.url).hero__more.link-border о проекте
