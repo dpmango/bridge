@@ -50,8 +50,18 @@ $(document).ready(function(){
       displacementY = 0,
       transitioning = false,
       transitioningTime = 1,
-      changingVideo = false
-  ;
+      changingVideo = false;
+
+  // canvas variables
+  var app;
+  var container;
+  // Arrays
+  var videoTexture = [];
+  var video = [];
+  var displacementSprite = [];
+  var mask = [];
+  var displacementFilter = [];
+  var slide = [];
 
   ////////////
   // READY - triggered when PJAX DONE
@@ -74,6 +84,8 @@ $(document).ready(function(){
     initSliders(fromPjax);
     initScrollMonitor(fromPjax);
     closeMobileMenu();
+    initCarouselVideos();
+    carousel();
   }
 
   // this is a master function which should have all functionality
@@ -578,7 +590,7 @@ $(document).ready(function(){
   })
 
   // Scrolling events
-  $(".carousel").on("mousewheel", function(event) {
+  _document.on("mousewheel", '.carousel', function(event) {
       if (event.deltaY == -1) {
           if (sliderN < sliderQ && !transitioning) {
               transitioningTime = 3;
@@ -647,31 +659,30 @@ $(document).ready(function(){
       mouseDist = 0;
   }
 
-  $(".carousel .hero").each(function(i, el) {
-      $(el).find(".container").on("mousedown touchend", function() {
-          changingVideo = true;
-          transitioningTime = 3;
-          if (sliderN != i) {
-              sliderN = i;
-          }
-      })
-  })
+  function initCarouselVideos(){
+    if ( $('#heroCanvas').length === 0 ){
+      return false
+    }
 
-  var app;
-  var container;
-  // Arrays
-  var videoTexture = [];
-  var video = [];
-  var displacementSprite = [];
-  var mask = [];
-  var displacementFilter = [];
-  var slide = [];
-
-  if ( $('#heroCanvas').length > 0 ){
-    carousel();
+    $(".carousel .hero").each(function(i, el) {
+        $(el).find(".container").on("mousedown touchend", function() {
+            changingVideo = true;
+            transitioningTime = 3;
+            if (sliderN != i) {
+                sliderN = i;
+            }
+        })
+    })
   }
-  
+
+  // carousel();
+
   function carousel() {
+      console.log($('#heroCanvas').length)
+      if ( $('#heroCanvas').length === 0 ){
+        return false
+      }
+
       app = new PIXI.Application(winW, winH, {backgroundColor: 0x000000});
       PIXI.utils.skipHello();
       document.getElementById("heroCanvas").appendChild(app.view);
@@ -685,6 +696,7 @@ $(document).ready(function(){
 
 
       $(".carousel .hero").each(function(i, el) {
+          console.log($(el).attr("data-video"))
           // Video texture
           videoTexture[i] = PIXI.Texture.fromVideo($(el).attr("data-video"));
           videoTexture[i].baseTexture.source.loop = true;
@@ -911,8 +923,10 @@ $(document).ready(function(){
   }
 
   function destroyCarousel() {
+    if ( app ){
       app.destroy();
-      $(".carousel canvas").remove();
+      $(".carousel canvas").remove();  
+    }
   }
 
   ////////////
@@ -1226,7 +1240,8 @@ $(document).ready(function(){
 
   // The transition has just finished and the old Container has been removed from the DOM.
   Barba.Dispatcher.on('transitionCompleted', function(currentStatus, oldStatus) {
-    initAutoScroll()
+    initAutoScroll();
+    destroyCarousel();
 
     // scroller update on pjax
     var newScroller = document.querySelector("#scroller-js");
