@@ -368,7 +368,7 @@ $(document).ready(function(){
               // Show a UI element to let the user manually start playback
             })
             .then(() => {
-              console.log('video started')
+              // console.log('video started')
               // Auto-play started
             });
         }
@@ -678,7 +678,6 @@ $(document).ready(function(){
   // carousel();
 
   function carousel() {
-      console.log($('#heroCanvas').length)
       if ( $('#heroCanvas').length === 0 ){
         return false
       }
@@ -696,7 +695,6 @@ $(document).ready(function(){
 
 
       $(".carousel .hero").each(function(i, el) {
-          console.log($(el).attr("data-video"))
           // Video texture
           videoTexture[i] = PIXI.Texture.fromVideo($(el).attr("data-video"));
           videoTexture[i].baseTexture.source.loop = true;
@@ -897,6 +895,9 @@ $(document).ready(function(){
       })
 
       function resizing() {
+          if ( !app.renderer ){
+            return false
+          }
           winW = $(window).outerWidth();
           sliderW = (winW);
           winH = $(window).outerHeight();
@@ -923,8 +924,8 @@ $(document).ready(function(){
   }
 
   function destroyCarousel() {
-    console.log(app)
     if ( app ){
+      console.log('destroying canvas');
       app.destroy();
       $(".carousel canvas").remove();
     }
@@ -1036,8 +1037,6 @@ $(document).ready(function(){
           var vScrollBottom = _window.scrollTop() + _window.height();
           var elTop = $(el).offset().top
           var triggerPoint = elTop + ( $(el).height() / 2)
-
-          console.log(vScrollBottom, triggerPoint, vScrollBottom > triggerPoint )
 
           if ( vScrollBottom > triggerPoint ){
             $(el).addClass('is-animated');
