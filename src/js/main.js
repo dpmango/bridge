@@ -923,9 +923,10 @@ $(document).ready(function(){
   }
 
   function destroyCarousel() {
+    console.log(app)
     if ( app ){
       app.destroy();
-      $(".carousel canvas").remove();  
+      $(".carousel canvas").remove();
     }
   }
 
@@ -1241,7 +1242,9 @@ $(document).ready(function(){
   // The transition has just finished and the old Container has been removed from the DOM.
   Barba.Dispatcher.on('transitionCompleted', function(currentStatus, oldStatus) {
     initAutoScroll();
-    destroyCarousel();
+    if ( $('#heroCanvas').length === 0 ){
+      destroyCarousel();
+    }
 
     // scroller update on pjax
     var newScroller = document.querySelector("#scroller-js");
