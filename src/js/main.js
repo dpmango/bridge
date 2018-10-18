@@ -43,14 +43,15 @@ $(document).ready(function(){
       swiping = false,
       mouseDist = 0,
       mouseDistAbs = 0,
-      mouseThreshold = 200,
+      mouseThreshold = 500,
       movingLeft = false,
       movingRight = false,
       displacementX = 500,
       displacementY = 0,
       transitioning = false,
       transitioningTime = 1,
-      changingVideo = false;
+      changingVideo = false,
+      swipingVideos = false
 
   // canvas variables
   var app;
@@ -62,6 +63,7 @@ $(document).ready(function(){
   var mask = [];
   var displacementFilter = [];
   var slide = [];
+  var containerW = [];
 
   ////////////
   // READY - triggered when PJAX DONE
@@ -84,6 +86,7 @@ $(document).ready(function(){
     initSliders(fromPjax);
     initScrollMonitor(fromPjax);
     closeMobileMenu();
+    layerOrder();
     initCarouselVideos();
     carousel();
   }
@@ -564,10 +567,12 @@ $(document).ready(function(){
 
   }
 
+
   // Swiping events
   $("body").on("mousedown", function(e) {
       e.preventDefault();
       swiping = true;
+      swipingVideos = true;
       mouseInit = e.clientX;
   }).on("touchstart", function(e) {
       swiping = true;
@@ -590,13 +595,14 @@ $(document).ready(function(){
   })
 
   // Scrolling events
-  _document.on("mousewheel", '.carousel', function(event) {
+  $(".carousel").on("mousewheel", function(event) {
       if (event.deltaY == -1) {
           if (sliderN < sliderQ && !transitioning) {
               transitioningTime = 3;
               transitioning = true;
               changingVideo = true;
               sliderN += 1;
+              layerOrder();
               TweenMax.set(window, {
                   transitioning: false,
                   delay: 1
@@ -608,6 +614,7 @@ $(document).ready(function(){
               transitioning = true;
               changingVideo = true;
               sliderN -= 1;
+              layerOrder();
               TweenMax.set(window, {
                   transitioning: false,
                   delay: 1
@@ -637,6 +644,26 @@ $(document).ready(function(){
       }
   }
 
+  // layerOrder();
+
+  function layerOrder() {
+      if ( $('#heroCanvas').length === 0 ){
+        return false
+      }
+
+      $(".hero").each(function(i, el) {
+          if (i == sliderN) {
+              TweenMax.set($(el), {
+                  className: "+=active"
+              })
+          } else {
+              TweenMax.set($(el), {
+                  className: "-=active"
+              })
+          }
+      })
+  }
+
   function slideEnd() {
       TweenMax.set(".carousel", {
           cursor: "grab"
@@ -653,8 +680,15 @@ $(document).ready(function(){
               changingVideo = true;
           }
       }
-      movingLeft = false;
-      movingRight = false;
+
+      if (mouseDistAbs > mouseThreshold) {
+          layerOrder();
+      }
+
+      setTimeout(function () {
+          movingLeft = false;
+          movingRight = false;
+      }, 500);
       mouseDistAbs = 0;
       mouseDist = 0;
   }
@@ -670,6 +704,7 @@ $(document).ready(function(){
             transitioningTime = 3;
             if (sliderN != i) {
                 sliderN = i;
+                layerOrder();
             }
         })
     })
@@ -682,8 +717,8 @@ $(document).ready(function(){
         return false
       }
 
-      app = new PIXI.Application(winW, winH, {backgroundColor: 0x000000});
       PIXI.utils.skipHello();
+      app = new PIXI.Application(winW, winH, {backgroundColor: 0x000000});
       document.getElementById("heroCanvas").appendChild(app.view);
       app.stage.interactive = true;
 
@@ -742,19 +777,28 @@ $(document).ready(function(){
       // Animate
       app.ticker.add(function() {
           $.each(video, function(i, el) {
-              // Video playing
-              if (i == sliderN && changingVideo) {
-                  videoTexture[i].baseTexture.source.play();
-                  if (i < sliderQ) {
-                      videoTexture[i+1].baseTexture.source.play();
+              // Video enabling
+              if (i == sliderN) {
+                  if (changingVideo) {
+                      videoTexture[i].baseTexture.source.play();
+                      changingVideo = false;
                   }
-                  if (i > 0) {
-                      videoTexture[i-1].baseTexture.source.play();
+              } else if (i > sliderN) {
+                  if (movingRight && swipingVideos) {
+                      videoTexture[i].baseTexture.source.play();
+                      swipingVideos = false;
+                  } else if (!movingRight) {
+                      videoTexture[i].baseTexture.source.pause();
                   }
-                  changingVideo = false;
-              } else if (i > sliderN + 1 || i < sliderN - 1){
-                  videoTexture[i].baseTexture.source.pause();
+              } else if (i < sliderN) {
+                  if (movingLeft && swipingVideos && i == sliderN - 1) {
+                      videoTexture[i].baseTexture.source.play();
+                      swipingVideos = false;
+                  } else if (!movingLeft) {
+                      videoTexture[i].baseTexture.source.pause();
+                  }
               }
+              // Video playing
               if (i == 0 && movingLeft && sliderN == 0 || i == sliderQ && movingRight && sliderN == sliderQ) {
                   TweenMax.to(slide[i], transitioningTime, {
                       ease: Power4.easeOut,
@@ -803,15 +847,10 @@ $(document).ready(function(){
                       })
                   }
               }
-          })
-          var containerW = [];
+          });
           $(".carousel .hero").each(function(i, el) {
               containerW[i] = $(el).outerWidth();
-              // Limits
               if (i == sliderN) {
-                  TweenMax.set($(el), {
-                      className: "+=active"
-                  })
                   TweenMax.to($(el), transitioningTime, {
                       ease: Power4.easeOut,
                       x: 0
@@ -827,6 +866,7 @@ $(document).ready(function(){
                           x: -mouseDist * (sliderW - (sliderW / 4)) / sliderW
                       })
                   }
+                  // Limits
                   if (i == 0 && movingLeft) {
                       TweenMax.to($(el), transitioningTime, {
                           ease: Power4.easeOut,
@@ -880,12 +920,6 @@ $(document).ready(function(){
                       })
                   }
               }
-
-              if (i != sliderN) {
-                  TweenMax.set($(el), {
-                      className: "-=active"
-                  })
-              }
           })
       });
 
@@ -895,9 +929,6 @@ $(document).ready(function(){
       })
 
       function resizing() {
-          if ( !app.renderer ){
-            return false
-          }
           winW = $(window).outerWidth();
           sliderW = (winW);
           winH = $(window).outerHeight();
