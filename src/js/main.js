@@ -86,10 +86,11 @@ $(document).ready(function(){
     initSliders(fromPjax);
     initScrollMonitor(fromPjax);
     closeMobileMenu();
-    layerOrder();
-    initCarouselVideos();
-    carousel();
   }
+
+  layerOrder();
+  initCarouselVideos();
+  carousel();
 
   // this is a master function which should have all functionality
   pageReady();
@@ -415,9 +416,12 @@ $(document).ready(function(){
     });
 
     var gallerySwiperInst = $('[js-swiper-gallery]');
-    if ( fromPjax ){
-      gallerySwiperInst = $('[js-swiper-gallery]')[1]
+    if (gallerySwiperInst.length === 2){
+      gallerySwiperInst = gallerySwiperInst[1]
     }
+    // if ( fromPjax ){
+    //   gallerySwiperInst = $('[js-swiper-gallery]')[1]
+    // }
 
     // cases slider
     if ( gallerySwiperInst && gallerySwiperInst.length > 0 ){
@@ -448,9 +452,12 @@ $(document).ready(function(){
     }
 
     var casesSwiperInst = $('[js-swiper-extra]')
-    if ( fromPjax ){
-      casesSwiperInst = $('[js-swiper-extra]')[1]
+    if (casesSwiperInst.length === 2){
+      casesSwiperInst = casesSwiperInst[1]
     }
+    // if ( fromPjax ){
+    //   casesSwiperInst = $('[js-swiper-extra]')[1]
+    // }
 
     if ( casesSwiperInst && casesSwiperInst.length > 0 ){
       // extra swiper
@@ -647,6 +654,7 @@ $(document).ready(function(){
   // layerOrder();
 
   function layerOrder() {
+      console.log($('#heroCanvas').length)
       if ( $('#heroCanvas').length === 0 ){
         return false
       }
@@ -1272,6 +1280,10 @@ $(document).ready(function(){
   // The transition has just finished and the old Container has been removed from the DOM.
   Barba.Dispatcher.on('transitionCompleted', function(currentStatus, oldStatus) {
     initAutoScroll();
+    layerOrder();
+    initCarouselVideos();
+    carousel();
+    
     if ( $('#heroCanvas').length === 0 ){
       destroyCarousel();
     }

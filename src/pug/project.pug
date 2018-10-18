@@ -8,14 +8,14 @@ block content
   .project#scroller-js
     .hero.hero--project(data-nav-color="white")
       .hero__background
-        video(autoplay muted loop)
-          source(src='/video/jim-beam.mp4' type="video/mp4")
+        video(poster="/video/sevidov.jpg" autoplay muted loop)
+          source(src='/video/sevidov.mp4' type="video/mp4")
 
       .hero__contents
         .container
-          .hero__name Внутреняя
-          .hero__title(js-wrap-spans) Сорваться на концерт &#10; THE CHEMICAL &#10; BROTHERS
-          a(href="#").hero__more.link-border о проекте
+          .hero__name The Macallan
+          .hero__title(js-wrap-spans) Премьера песни &#10; Антона Севидова &#10; Avoid
+          a(href="#").hero__more.link-borde
         
     .hero-scroll(data-nav-color="black")
       .hero-scroll__button(js-scroll-to data-target="section-name")
@@ -26,7 +26,8 @@ block content
       data-nav-color="black"
       data-scroll="section-name")
       .container
-        h2.h2-title Разработка креативной <br/> идеи для вирусного <br/> ролика
+        h2.h2-title Спецпроект для Masters of Taste
+        p.p-primary Солист группы Tesla Boy Антон Севидов пригласил нас в свою студию, рассказал о процессе создания актуального музыкального произведения и записал эксклюзивно для The Macallan песню Avoid, впоследствии ставшую хитом
     
     // section
     .s-video
